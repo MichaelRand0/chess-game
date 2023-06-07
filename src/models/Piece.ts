@@ -1,4 +1,3 @@
-import { Theme } from "@/hooks/theme/types"
 
 export enum Side {
   white = 'white',

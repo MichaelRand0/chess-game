@@ -8,5 +8,7 @@ export const themes = {
       fill: "black",
       stroke: "white",
     },
+    cellBlack: "#779556",
+    cellWhite: "#EBECD0"
   },
 }
