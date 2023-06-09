@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react"
 
 export const useTable = () => {
-  const [tableSize, setTableSize] = useState(5120)
-  const [cellSize, setCellSize] = useState(10)
+  const [cellSize, setCellSize] = useState(42)
+
   useEffect(() => {
-    setCellSize(tableSize / 64)
-  }, [tableSize])
+    const width = window.screen.width
+    setCellSize((width * 0.45) * 0.125)
+  }, [])
 
   return {
-    tableSize,
-    setTableSize,
     cellSize,
   }
 }

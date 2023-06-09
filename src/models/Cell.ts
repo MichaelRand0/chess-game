@@ -1,9 +1,13 @@
 export interface ICell {
-  size: number
-  color: {
+  id: string
+  piece: null
+  colors: {
     bg: string
-    index?: string
+    index: string
   }
-  upIndex?: string | number
-  downIndex?: string | number
+  index?: {
+    top?: string | number
+    bottom?: string | number
+  }
+  size: number
 }
