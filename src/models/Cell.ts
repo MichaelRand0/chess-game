@@ -1,6 +1,13 @@
+import { PieceNames } from "./Piece"
+
+export type Size = {
+  cellSize: number
+  pieceSize: number
+}
+
 export interface ICell {
   id: string
-  piece: null
+  piece: PieceNames
   colors: {
     bg: string
     index: string
@@ -9,8 +16,5 @@ export interface ICell {
     top?: string | number
     bottom?: string | number
   }
-  size: {
-    cellSize: number
-    pieceSize: number
-  }
+  size: Size
 }

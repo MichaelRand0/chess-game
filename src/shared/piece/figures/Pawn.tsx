@@ -1,11 +1,8 @@
-import { useTheme } from "@/hooks/theme"
-import { IPiece, Side } from "@/models/Piece"
+import { IFigure } from "@/models/Piece"
 import React from "react"
 
-const Pawn = (props: IPiece) => {
-  const { side, size } = props
-  const { theme } = useTheme()
-  const colorTheme = side === Side.white ? theme.white : theme.black
+const Pawn = (props: IFigure) => {
+  const { size, colorTheme } = props
   return (
     <div>
       <svg

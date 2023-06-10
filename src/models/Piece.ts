@@ -1,10 +1,11 @@
+import { Theme } from "@/hooks/theme/types"
 
 export enum Side {
   white = 'white',
   black = 'black'
 }
 
-export enum Piece {
+export enum PieceNames {
   pawn = 'pawn',
   king = 'king',
   queen = 'queen',
@@ -13,8 +14,12 @@ export enum Piece {
   rock = 'rock'
 }
 
-export interface IPiece extends React.ComponentProps<'div'> {
-  // name: Piece
-  side: Side
+export interface IFigure extends React.ComponentProps<'div'> {
   size: number
+  colorTheme: Theme
+}
+
+export interface IPiece extends Omit<IFigure, 'colorTheme'> {
+  side: Side
+  name: PieceNames
 }

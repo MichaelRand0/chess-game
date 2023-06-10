@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useTheme } from "../theme"
 import { ICell } from "@/models/Cell"
 import { useTable } from "../table"
+import { PieceNames } from "@/models/Piece"
 
 export const useCell = () => {
   const [cells, setCells] = useState<ICell[]>([])
@@ -30,7 +31,7 @@ export const useCell = () => {
             : theme.cellBlack
         newCells.push({
           id: `${char}${i}`,
-          piece: null,
+          piece: PieceNames.pawn,
           colors: {
             bg: bgColor,
             index: indexColor,
