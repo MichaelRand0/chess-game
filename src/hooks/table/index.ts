@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 export const useTable = () => {
-  const [cellSize, setCellSize] = useState(42)
+  const [cellSize, setCellSize] = useState(0)
 
   useEffect(() => {
     const width = window.screen.width

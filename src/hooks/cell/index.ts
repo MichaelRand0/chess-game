@@ -9,31 +9,50 @@ export const useCell = () => {
   const { cellSize } = useTable()
   const charArr = ["a", "b", "c", "d", "e", "f", "g", "h"].reverse()
   const initCells = () => {
-    const newCells:ICell[] = []
+    const newCells: ICell[] = []
     charArr.forEach((char, charIndex) => {
-      for(let i = 8; i >= 1; i--) {
-        const bgColor = charIndex % 2 === 0 ? i % 2 === 0 ? theme.cellWhite : theme.cellBlack : i % 2 === 0 ? theme.cellBlack : theme.cellWhite
-        const indexColor = charIndex % 2 === 0 ? i % 2 === 0 ? theme.cellBlack : theme.cellWhite : i % 2 === 0 ? theme.cellWhite : theme.cellBlack
+      for (let i = 8; i >= 1; i--) {
+        const bgColor =
+          charIndex % 2 === 0
+            ? i % 2 === 0
+              ? theme.cellWhite
+              : theme.cellBlack
+            : i % 2 === 0
+            ? theme.cellBlack
+            : theme.cellWhite
+        const indexColor =
+          charIndex % 2 === 0
+            ? i % 2 === 0
+              ? theme.cellBlack
+              : theme.cellWhite
+            : i % 2 === 0
+            ? theme.cellWhite
+            : theme.cellBlack
         newCells.push({
           id: `${char}${i}`,
           piece: null,
           colors: {
             bg: bgColor,
-            index: indexColor
+            index: indexColor,
           },
           index: {
-            top: i === 8 ? (i - charIndex) : '',
-            bottom: charIndex === 7 ? charArr[i - 1] : ''
+            top: i === 8 ? i - charIndex : "",
+            bottom: charIndex === 7 ? charArr[i - 1] : "",
           },
-          size: cellSize
+          size: {
+            cellSize,
+            pieceSize: cellSize * 0.75,
+          },
         })
       }
     })
     setCells(newCells)
   }
   useEffect(() => {
-    initCells()
-  }, [])
+    if (cellSize > 0) {
+      initCells()
+    }
+  }, [cellSize])
   return {
     cells,
   }

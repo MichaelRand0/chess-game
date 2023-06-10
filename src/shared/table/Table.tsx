@@ -10,12 +10,11 @@ const Table = (props: Props) => {
   const { theme } = useTheme()
   const { cellSize } = useTable()
   const {cells} = useCell()
-  console.log('cells', cells)
   return (
     <div className="flex flex-wrap" style={{ maxWidth: cellSize * 8}}>
       {cells.map(cell => {
         return (
-          <Cell {...cell} size={cellSize} />
+          <Cell {...cell} />
         )
       })}
     </div>

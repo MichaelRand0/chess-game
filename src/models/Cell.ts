@@ -9,5 +9,8 @@ export interface ICell {
     top?: string | number
     bottom?: string | number
   }
-  size: number
+  size: {
+    cellSize: number
+    pieceSize: number
+  }
 }
