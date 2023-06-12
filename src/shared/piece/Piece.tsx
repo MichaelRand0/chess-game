@@ -16,11 +16,11 @@ const Piece = (props: IPiece) => {
       ? Pawn
       : name === PieceNames.king
       ? King
-      : PieceNames.queen
+      : name === PieceNames.queen
       ? Queen
-      : PieceNames.knight
+      : name === PieceNames.knight
       ? Knight
-      : PieceNames.bishop
+      : name === PieceNames.bishop
       ? Bishop
       : Rock
   return (

@@ -14,7 +14,7 @@ export enum PieceNames {
   rock = 'rock'
 }
 
-export interface IFigure extends React.ComponentProps<'div'> {
+export interface IFigure {
   size: number
   colorTheme: Theme
 }
