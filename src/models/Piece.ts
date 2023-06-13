@@ -22,4 +22,5 @@ export interface IFigure {
 export interface IPiece extends Omit<IFigure, 'colorTheme'> {
   side: Side
   name: PieceNames
+  movesCount: number
 }
