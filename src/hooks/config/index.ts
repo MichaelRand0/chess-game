@@ -6,13 +6,12 @@ import { useDispatch, useSelector } from "react-redux"
 export const useConfig = () => {
   const dispatch = useDispatch()
   const configSelector = useSelector((state: RootState) => state.config)
-  const { piecePositions, coords } = configSelector
+  const { piecePositions } = configSelector
   const actions = bindActionCreators({ ...configSlice.actions }, dispatch)
   const {setPositions} = actions
 
   return {
     piecePositions,
-    setPositions,
-    coords
+    setPositions
   }
 }

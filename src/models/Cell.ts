@@ -12,4 +12,5 @@ export interface ICell {
     bottom?: string | number
   }
   size: number
+  onClick: any
 }

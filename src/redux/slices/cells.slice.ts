@@ -4,11 +4,13 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 interface IState {
   cells: ICell[]
   markedCells: string[]
+  selectedCell: ICell | null
 }
 
 const initialState: IState = {
   cells: [],
-  markedCells: []
+  markedCells: [],
+  selectedCell: null,
 }
 
 export const cellsSlice = createSlice({
@@ -20,6 +22,9 @@ export const cellsSlice = createSlice({
     },
     setMarkedCells(state, action: PayloadAction<string[]>) {
       state.markedCells = action.payload
+    },
+    setSelectedCell(state, action: PayloadAction<ICell>) {
+      state.selectedCell = action.payload
     },
   },
 })

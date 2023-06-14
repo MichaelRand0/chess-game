@@ -89,7 +89,7 @@ export const initPositions = [
   {
     name: PieceNames.pawn,
     side: Side.black,
-    pos: "g7",
+    pos: "e3",
     movesCount: 0,
   },
   {
