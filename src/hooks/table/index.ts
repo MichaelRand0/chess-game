@@ -31,7 +31,7 @@ export const useTable = () => {
       const pos = `${charsArr[charArrIndex]}${numIndex}`
       const piece = {
         ...piecePositions.filter((piece) => piece.pos === pos)[0],
-        size: cellSize * 0.75,
+        size: cellSize * 0.7,
       }
       const pieceLogic = getPiece(piece.name)
       const onClick = pieceLogic?.onClick

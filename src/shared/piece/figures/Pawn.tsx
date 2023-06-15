@@ -26,11 +26,6 @@ const Pawn = (props: IFigure) => {
             stroke-width="0.5"
           />
         </g>
-        <defs>
-          <clipPath id="clip0_1_5">
-            <rect width="13.365" height="21.2781" fill={colorTheme.fill} />
-          </clipPath>
-        </defs>
       </svg>
     </div>
   )

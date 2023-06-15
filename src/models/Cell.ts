@@ -14,3 +14,5 @@ export interface ICell {
   size: number
   onClick: any
 }
+
+export interface ISelectedCell extends Omit<ICell, 'onClick'> {}

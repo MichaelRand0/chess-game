@@ -7,10 +7,14 @@ type Props = {}
 
 const Table = (props: Props) => {
   const { cellSize, initCells } = useTable()
-  const {cells} = useCell()
+  const {cells, selectedCell} = useCell()
   useEffect(() => {
     initCells()
   }, [cellSize]) 
+
+  useEffect(() => {
+    console.log('selectedCell', selectedCell)
+  }, [selectedCell])
   return (
     <div className="flex flex-wrap" style={{ maxWidth: cellSize * 8}}>
       {cells.map(cell => {
