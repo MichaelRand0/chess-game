@@ -6,8 +6,8 @@ import { useMove } from "../move"
 
 export const usePawn = () => {
   const { getCellByCoords, getCoordsById } = useCoords()
-  const { setSelectedCell } = useCell()
-  const { checkVertical } = useMove()
+  const { setSelectedCell, setMarkedCells } = useCell()
+  const { checkMoves } = useMove()
 
   const onClick = (cell: ICell) => {
     setSelectedCell(cell)
@@ -31,9 +31,10 @@ export const usePawn = () => {
     attackMoves = attackMoves.filter(
       (move) => move?.piece && move?.piece?.side !== piece?.side
     )
-    moves = checkVertical(cell, moves)
+    moves = checkMoves(cell, moves)
     const resultMoves = moves.concat(attackMoves)
-    console.log("resultMoves", resultMoves)
+    setMarkedCells(resultMoves)
+    setSelectedCell(cell)
   }
 
   return {

@@ -124,6 +124,28 @@ export const useMove = () => {
     return result
   }
 
+  const checkMoves = (cell: ICell, moves: ICell[]) => {
+    const piece = cell?.piece
+    switch (piece?.name) {
+      case PieceNames.pawn:
+        return checkVertical(cell, moves)
+      case PieceNames.rock:
+        const verticalMoves = checkVertical(cell, moves)
+        const horizontalMoves = checkHorizontal(cell, moves)
+        return verticalMoves.concat(horizontalMoves)
+      case PieceNames.bishop:
+        return checkDiagonal(cell)
+      case PieceNames.queen:
+        const vertical = checkVertical(cell, moves)
+        const horizontal = checkHorizontal(cell, moves)
+        const diagonals = checkDiagonal(cell)
+        return vertical.concat(horizontal, diagonals)
+
+      default:
+        return moves
+    }
+  }
+
   useEffect(() => {
     if (cells.length > 0) {
       checkDiagonal(cells[2])
@@ -133,5 +155,7 @@ export const useMove = () => {
   return {
     checkVertical,
     checkHorizontal,
+    checkDiagonal,
+    checkMoves,
   }
 }

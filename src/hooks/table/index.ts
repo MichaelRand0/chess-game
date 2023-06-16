@@ -11,7 +11,7 @@ export const useTable = () => {
 
   const { coords } = useCoords()
   const { piecePositions } = useConfig()
-  const { markedCells, setCells } = useCell()
+  const { markedCells, setCells, selectedCell } = useCell()
   const { theme } = useTheme()
   const { getPiece } = usePiece()
 
@@ -36,15 +36,14 @@ export const useTable = () => {
       const pieceLogic = getPiece(piece.name)
       const onClick = pieceLogic?.onClick
 
-      const bgColor = markedCells.filter((id) => id === pos)?.[0]
-        ? "#0cf54e"
-        : charArrIndex % 2 === 0
-        ? numIndex % 2 === 0
-          ? theme.cellBlack
-          : theme.cellWhite
-        : numIndex % 2 === 0
-        ? theme.cellWhite
-        : theme.cellBlack
+      const bgColor =
+        charArrIndex % 2 === 0
+          ? numIndex % 2 === 0
+            ? theme.cellBlack
+            : theme.cellWhite
+          : numIndex % 2 === 0
+          ? theme.cellWhite
+          : theme.cellBlack
 
       const indexColor =
         charArrIndex % 2 === 0
@@ -61,6 +60,7 @@ export const useTable = () => {
         colors: {
           bg: bgColor,
           index: indexColor,
+          hover: theme.hover
         },
         index: {
           top: charArrIndex === charsArr.length - 1 ? numIndex : "",
@@ -86,6 +86,6 @@ export const useTable = () => {
 
   return {
     cellSize,
-    initCells
+    initCells,
   }
 }

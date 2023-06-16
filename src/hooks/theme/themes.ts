@@ -9,6 +9,7 @@ export const themes = {
       stroke: "white",
     },
     cellBlack: "#779556",
-    cellWhite: "#EBECD0"
+    cellWhite: "#EBECD0",
+    hover: '#B58863'
   },
 }
