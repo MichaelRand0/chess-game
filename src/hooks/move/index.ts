@@ -1,7 +1,6 @@
 import { ICell } from "@/models/Cell"
 import { PieceNames } from "@/models/Piece"
 import { useCoords } from "../coords"
-import { FormulaDiagonal } from "@/models/Move"
 import { useCell } from "../cell"
 import { useEffect } from "react"
 
@@ -82,41 +81,54 @@ export const useMove = () => {
     return result
   }
 
-  const calcDiagonal = (formula: FormulaDiagonal, cell: ICell) => {
-    const char = cell.id.split("")[0]
+  const checkDiagonal = (currCell: ICell) => {
+    const directions = [
+      { x: 1, y: 1 },
+      { x: 1, y: -1 },
+      { x: -1, y: 1 },
+      { x: -1, y: -1 },
+    ]
+    const currPiece = currCell?.piece
+    const char = currCell.id.split("")[0]
     const indexOfChar = charsArr.indexOf(char)
-    const num = Number(cell.id.split("")[1])
-    let x: number = formula.x
-    let y: number = formula.y
-    const result = []
-    while (true) {
-      const newChar = charsArr[indexOfChar + x]
-      const newNum = num + y
-      const id = `${newChar}${newNum}`
-      const cell = cells.find((cell) => cell.id === id)
-      if (cell) {
-        x = x < 0 ? x - 1 : x + 1
-        y = y < 0 ? y - 1 : y + 1
-        result.push(cell)
-        continue
-      } else {
-        break
+    const num = Number(currCell.id.split("")[1])
+    const result: ICell[] = []
+    directions.forEach((dir) => {
+      const { x: initX, y: initY } = dir
+      let x = initX
+      let y = initY
+      while (true) {
+        const newChar = charsArr[indexOfChar + x]
+        const newNum = num + y
+        const id = `${newChar}${newNum}`
+        const cell = cells.find((cell) => cell.id === id)
+        const piece = cell?.piece
+        if (cell) {
+          x = x < 0 ? x - 1 : x + 1
+          y = y < 0 ? y - 1 : y + 1
+          if (piece) {
+            if (piece?.side !== currPiece?.side) {
+              result.push(cell)
+              break
+            } else {
+              break
+            }
+          }
+          result.push(cell)
+          continue
+        } else {
+          break
+        }
       }
-    }
+    })
     return result
   }
 
   useEffect(() => {
-    if(cells.length > 0) {
-      calcDiagonal({x: 1, y: 1}, cells[36])
+    if (cells.length > 0) {
+      checkDiagonal(cells[2])
     }
   }, [cells])
-
-  const checkDiagonal = (currCell: ICell, cells: ICell[]) => {
-    const currPiece = currCell?.piece
-    const currChar = currCell.id.split("")[0]
-    const currNum = currCell.id.split("")[1]
-  }
 
   return {
     checkVertical,
