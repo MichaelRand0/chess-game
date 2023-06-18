@@ -1,5 +1,5 @@
 import { ICell } from "@/models/Cell"
-import { PieceNames } from "@/models/Piece"
+import { PieceNames, Side } from "@/models/Piece"
 import { useCoords } from "../coords"
 import { useCell } from "../cell"
 import { useEffect } from "react"
@@ -11,17 +11,23 @@ export const useMove = () => {
   const checkVertical = (currCell: ICell, cells: ICell[]) => {
     const currPiece = currCell?.piece
     const isPawn = currPiece?.name === PieceNames.pawn
-    const arrA = cells.filter((cell) => {
+    let arrA = cells.filter((cell) => {
       const numOfId = Number(cell.id.split("")[1])
       const numOfCurrId = Number(currCell.id.split("")[1])
       return numOfId > numOfCurrId
     })
-    const arrB = cells.filter((cell) => {
+    let arrB = cells.filter((cell) => {
       const numOfId = Number(cell.id.split("")[1])
       const numOfCurrId = Number(currCell.id.split("")[1])
       return numOfId < numOfCurrId
     })
+    if(currCell?.piece?.side === Side.white) {
+      arrB = arrB.reverse()
+    } else {
+      arrA = arrA.reverse()
+    }
     const result = []
+    console.log('arrA', arrA)
     for (let i = 0; i < arrA.length; i++) {
       if (arrA[i]?.piece) {
         if (isPawn) {
@@ -51,16 +57,21 @@ export const useMove = () => {
 
   const checkHorizontal = (currCell: ICell, cells: ICell[]) => {
     const currPiece = currCell?.piece
-    const arrA = cells.filter((cell) => {
+    let arrA = cells.filter((cell) => {
       const indexOfChar = charsArr.indexOf(cell?.id.split("")[0])
       const indexOfCurrChar = charsArr.indexOf(currCell?.id.split("")[0])
       return indexOfChar < indexOfCurrChar
     })
-    const arrB = cells.filter((cell) => {
+    let arrB = cells.filter((cell) => {
       const indexOfChar = charsArr.indexOf(cell?.id.split("")[0])
       const indexOfCurrChar = charsArr.indexOf(currCell?.id.split("")[0])
       return indexOfChar > indexOfCurrChar
     })
+    if(currCell?.piece?.side === Side.white) {
+      arrA = arrA.reverse()
+    } else {
+      arrB = arrB.reverse()
+    }
     const result = []
     for (let i = 0; i < arrA.length; i++) {
       if (arrA[i]?.piece) {

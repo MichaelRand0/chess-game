@@ -13,7 +13,7 @@ const Cell = (props: Props) => {
       <div className='z-10'>
         {piece && <Piece {...piece} />}
       </div>
-      <div className='text-[red] font-bold'>{id}</div>
+      {/* <div className='text-[red] font-bold'>{id}</div> */}
       {highlightType === HighLightTypes.ATTACK && <div className='absolute' style={{width: size, height: size, borderRadius: size / 2.5, backgroundColor: colors.bg}}></div>}
       {piece ? '' : <div style={{width: size / 3.5, height: size / 3.5, backgroundColor: highlightType === HighLightTypes.MOVE ? colors?.hover : ''}} className='absolute rounded-full'></div>}
       <div style={{color: colors?.index}} className='absolute top-[2px] left-[5px] font-semibold text-sm lg:text-lg'>{index?.top}</div>
