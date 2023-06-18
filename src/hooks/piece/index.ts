@@ -4,6 +4,7 @@ import { useKnight } from "./knight"
 import { useBishop } from "./bishop"
 import { useRock } from "./rock"
 import { useQueen } from "./queen"
+import { useKing } from "./king"
 
 export const usePiece = () => {
   const pawn = usePawn()
@@ -11,6 +12,7 @@ export const usePiece = () => {
   const bishop = useBishop()
   const rock = useRock()
   const queen = useQueen()
+  const king = useKing()
 
   const getPiece = (name: PieceNames) => {
     switch (name) {
@@ -24,6 +26,8 @@ export const usePiece = () => {
         return rock
       case PieceNames.queen:
         return queen
+      case PieceNames.king:
+        return king
 
       default:
         break
