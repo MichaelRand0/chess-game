@@ -7,7 +7,7 @@ interface Props extends ICell {
 }
 
 const Cell = (props: Props) => {
-  const {id, index, piece, colors, size, highlightType = null, onClick} = props
+  const {index, piece, colors, size, highlightType = null, onClick} = props
   return (
     <div onClick={() => onClick({...props})} className='relative flex items-center justify-center' style={{width: size, height: size, backgroundColor: highlightType === HighLightTypes.SELECTED || highlightType === HighLightTypes.ATTACK ? colors?.hover : colors?.bg}}>
       <div className='z-10'>

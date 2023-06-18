@@ -6,47 +6,58 @@ const Knight = (props: IFigure) => {
   return (
     <div>
       <svg
+        width={size}
+        height={size}
+        viewBox="0 0 70 70"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        version="1.1"
-        width="45"
-        height="45"
       >
-        <g
-          opacity={1}
-          fill="none"
-          fillRule="evenodd"
-          fillOpacity={1}
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M35 7.375C57.3125 9.5 70.0625 24.375 69 69H20.125C20.125 49.875 41.375 55.1875 37.125 24.375"
+          fill={colorTheme.fill}
+        />
+        <path
+          d="M35 7.375C57.3125 9.5 70.0625 24.375 69 69H20.125C20.125 49.875 41.375 55.1875 37.125 24.375"
           stroke={colorTheme.stroke}
-          strokeWidth={1.5}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeMiterlimit={4}
-          strokeDasharray={"none"}
-          strokeOpacity={1}
-          transform="translate(0,0.3)"
-        >
-          <path
-            fill={colorTheme.fill}
-            stroke={colorTheme.stroke}
-            d="M 22,10 C 32.5,11 38.5,18 38,39 L 15,39 C 15,30 25,32.5 23,18"
-          />
-          <path
-            fill={colorTheme.fill}
-            stroke={colorTheme.stroke}
-            d="M 24,18 C 24.38,20.91 18.45,25.37 16,27 C 13,29 13.18,31.34 11,31 C 9.958,30.06 12.41,27.96 11,28 C 10,28 11.19,29.23 10,30 C 9,30 5.997,31 6,26 C 6,24 12,14 12,14 C 12,14 13.89,12.1 14,10.5 C 13.27,9.506 13.5,8.5 13.5,7.5 C 14.5,6.5 16.5,10 16.5,10 L 18.5,10 C 18.5,10 19.28,8.008 21,7 C 22,7 22,10 22,10"
-          />
-          <path
-            fill={colorTheme.stroke}
-            stroke={colorTheme.stroke}
-            d="M 9.5 25.5 A 0.5 0.5 0 1 1 8.5,25.5 A 0.5 0.5 0 1 1 9.5 25.5 z"
-          />
-          <path
-            fill={colorTheme.stroke}
-            stroke={colorTheme.stroke}
-            d="M 15 15.5 A 0.5 1.5 0 1 1  14,15.5 A 0.5 1.5 0 1 1  15 15.5 z"
-            transform="matrix(0.866,0.5,-0.5,0.866,9.693,-5.173)"
-          />
-        </g>
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M39.25 24.375C40.0575 30.5587 27.4563 40.0362 22.25 43.5C15.875 47.75 16.2575 52.7225 11.625 52C9.41075 50.0025 14.6213 45.54 11.625 45.625C9.50001 45.625 12.0288 48.2387 9.50001 49.875C7.37501 49.875 0.99363 52 1 41.375C1 37.125 13.75 15.875 13.75 15.875C13.75 15.875 17.7663 11.8375 18 8.4375C16.4488 6.32525 16.9375 4.1875 16.9375 2.0625C19.0625 -0.0624999 23.3125 7.375 23.3125 7.375H27.5625C27.5625 7.375 29.22 3.142 32.875 1C35 1 35 7.375 35 7.375"
+          fill={colorTheme.fill}
+        />
+        <path
+          d="M39.25 24.375C40.0575 30.5587 27.4563 40.0362 22.25 43.5C15.875 47.75 16.2575 52.7225 11.625 52C9.41075 50.0025 14.6213 45.54 11.625 45.625C9.50001 45.625 12.0288 48.2387 9.50001 49.875C7.37501 49.875 0.99363 52 1 41.375C1 37.125 13.75 15.875 13.75 15.875C13.75 15.875 17.7663 11.8375 18 8.4375C16.4488 6.32525 16.9375 4.1875 16.9375 2.0625C19.0625 -0.0624999 23.3125 7.375 23.3125 7.375H27.5625C27.5625 7.375 29.22 3.142 32.875 1C35 1 35 7.375 35 7.375"
+          stroke={colorTheme.stroke}
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M8.4375 40.3125C8.4375 40.5943 8.32556 40.8645 8.1263 41.0638C7.92704 41.2631 7.65679 41.375 7.375 41.375C7.09321 41.375 6.82296 41.2631 6.6237 41.0638C6.42444 40.8645 6.3125 40.5943 6.3125 40.3125C6.3125 40.0307 6.42444 39.7605 6.6237 39.5612C6.82296 39.3619 7.09321 39.25 7.375 39.25C7.65679 39.25 7.92704 39.3619 8.1263 39.5612C8.32556 39.7605 8.4375 40.0307 8.4375 40.3125Z"
+          fill={colorTheme.stroke}
+          stroke={colorTheme.stroke}
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M19.9826 19.5937C19.5599 20.3258 19.0576 20.972 18.5862 21.39C18.1147 21.8081 17.7128 21.9638 17.4687 21.8229C17.2247 21.682 17.1586 21.256 17.2849 20.6387C17.4112 20.0214 17.7197 19.2633 18.1424 18.5312C18.5651 17.7992 19.0674 17.153 19.5388 16.735C20.0103 16.3169 20.4122 16.1612 20.6562 16.3021C20.9003 16.443 20.9664 16.869 20.8401 17.4863C20.7137 18.1036 20.4053 18.8617 19.9826 19.5937Z"
+          fill={colorTheme.stroke}
+          stroke={colorTheme.stroke}
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
       </svg>
     </div>
   )
