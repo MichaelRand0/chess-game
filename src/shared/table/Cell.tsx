@@ -4,6 +4,7 @@ import Piece from '../piece/Piece'
 
 interface Props extends ICell {
   highlightType?: HighLightTypes
+  onClick: Function
 }
 
 const Cell = (props: Props) => {

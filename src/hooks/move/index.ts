@@ -3,31 +3,32 @@ import { PieceNames, Side } from "@/models/Piece"
 import { useCoords } from "../coords"
 import { useCell } from "../cell"
 import { useEffect } from "react"
+import { usePlayer } from "../player"
 
 export const useMove = () => {
   const { coords } = useCoords()
-  const { cells } = useCell()
+  const { cells, setCells, setMarkedCells, setSelectedCell } = useCell()
+  const { togglePlayingSide } = usePlayer()
   const { charsArr } = coords
   const checkVertical = (currCell: ICell, cells: ICell[]) => {
     const currPiece = currCell?.piece
     const isPawn = currPiece?.name === PieceNames.pawn
-    let arrA = cells.filter((cell) => {
-      const numOfId = Number(cell.id.split("")[1])
-      const numOfCurrId = Number(currCell.id.split("")[1])
+    let arrA = cells?.filter((cell) => {
+      const numOfId = Number(cell?.id.split("")[1])
+      const numOfCurrId = Number(currCell?.id.split("")[1])
       return numOfId > numOfCurrId
     })
-    let arrB = cells.filter((cell) => {
-      const numOfId = Number(cell.id.split("")[1])
-      const numOfCurrId = Number(currCell.id.split("")[1])
+    let arrB = cells?.filter((cell) => {
+      const numOfId = Number(cell?.id.split("")[1])
+      const numOfCurrId = Number(currCell?.id.split("")[1])
       return numOfId < numOfCurrId
     })
-    if(currCell?.piece?.side === Side.white) {
+    if (currCell?.piece?.side === Side.white) {
       arrB = arrB.reverse()
     } else {
       arrA = arrA.reverse()
     }
     const result = []
-    console.log('arrA', arrA)
     for (let i = 0; i < arrA.length; i++) {
       if (arrA[i]?.piece) {
         if (isPawn) {
@@ -67,7 +68,7 @@ export const useMove = () => {
       const indexOfCurrChar = charsArr.indexOf(currCell?.id.split("")[0])
       return indexOfChar > indexOfCurrChar
     })
-    if(currCell?.piece?.side === Side.white) {
+    if (currCell?.piece?.side === Side.white) {
       arrA = arrA.reverse()
     } else {
       arrB = arrB.reverse()
@@ -163,10 +164,43 @@ export const useMove = () => {
     }
   }, [cells])
 
+  const movePiece = (cellFrom: ICell, cellTo: ICell) => {
+    const pieceFrom = cellFrom?.piece
+    if (pieceFrom) {
+      const isPawn = pieceFrom?.name === PieceNames.pawn
+      const movesCount = pieceFrom?.movesCount
+      const newCells = cells.map((item) => {
+        if (item.id === cellFrom.id) {
+          return {
+            ...item,
+            piece: null,
+          }
+        }
+        if (item.id === cellTo.id && pieceFrom) {
+          return {
+            ...item,
+            piece: {
+              ...pieceFrom,
+              pos: cellTo.id,
+              movesCount: isPawn ? movesCount + 1 : movesCount,
+            },
+          }
+        }
+        return item
+      })
+      console.log("newCells", newCells)
+      setCells(newCells)
+      setMarkedCells([])
+      setSelectedCell(null)
+      togglePlayingSide()
+    }
+  }
+
   return {
     checkVertical,
     checkHorizontal,
     checkDiagonal,
     checkMoves,
+    movePiece,
   }
 }

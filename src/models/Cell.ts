@@ -13,7 +13,6 @@ export interface ICell {
     bottom?: string | number
   }
   size: number
-  onClick: any
 }
 
 export interface ISelectedCell extends Omit<ICell, 'onClick'> {}

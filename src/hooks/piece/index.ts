@@ -5,6 +5,10 @@ import { useBishop } from "./bishop"
 import { useRock } from "./rock"
 import { useQueen } from "./queen"
 import { useKing } from "./king"
+import { ICell } from "@/models/Cell"
+import { useMove } from "../move"
+import { useCell } from "../cell"
+import { usePlayer } from "../player"
 
 export const usePiece = () => {
   const pawn = usePawn()
@@ -13,6 +17,11 @@ export const usePiece = () => {
   const rock = useRock()
   const queen = useQueen()
   const king = useKing()
+
+  const { movePiece } = useMove()
+  const { setSelectedCell, setMarkedCells, selectedCell, markedCells } =
+    useCell()
+  const { player, playingSide } = usePlayer()
 
   const getPiece = (name: PieceNames) => {
     switch (name) {
@@ -34,7 +43,31 @@ export const usePiece = () => {
     }
   }
 
+  const pieceHandler = (cell: ICell) => {
+    if (player.side === playingSide) {
+      const piece = cell?.piece
+      if (selectedCell?.id === cell.id) {
+        setSelectedCell(null)
+        setMarkedCells([])
+      } else {
+        if (cell?.piece?.side === player.side && piece) {
+          const pieceLogic = getPiece(piece?.name)
+          pieceLogic?.onClick(cell)
+        } else {
+          if (
+            markedCells.some((item) => item.id === cell?.id) &&
+            selectedCell
+          ) {
+            console.log("movePiecemovePiece")
+            movePiece(selectedCell, cell)
+          }
+        }
+      }
+    }
+  }
+
   return {
     getPiece,
+    pieceHandler,
   }
 }

@@ -23,7 +23,7 @@ export const cellsSlice = createSlice({
     setMarkedCells(state, action: PayloadAction<ICell[]>) {
       state.markedCells = action.payload
     },
-    setSelectedCell(state, action: PayloadAction<ICell>) {
+    setSelectedCell(state, action: PayloadAction<ICell | null>) {
       state.selectedCell = action.payload
     },
   },

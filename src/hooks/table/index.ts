@@ -4,16 +4,14 @@ import { useCoords } from "../coords"
 import { useConfig } from "../config"
 import { useCell } from "../cell"
 import { useTheme } from "../theme"
-import { usePiece } from "../piece"
 
 export const useTable = () => {
   const [cellSize, setCellSize] = useState(0)
 
   const { coords } = useCoords()
   const { piecePositions } = useConfig()
-  const { markedCells, setCells, selectedCell } = useCell()
+  const { setCells } = useCell()
   const { theme } = useTheme()
-  const { getPiece } = usePiece()
 
   useEffect(() => {
     const width = window.screen.width
@@ -33,8 +31,6 @@ export const useTable = () => {
         ...piecePositions.filter((piece) => piece.pos === pos)[0],
         size: cellSize * 0.7,
       }
-      const pieceLogic = getPiece(piece.name)
-      const onClick = pieceLogic?.onClick
 
       const bgColor =
         charArrIndex % 2 === 0
@@ -60,14 +56,13 @@ export const useTable = () => {
         colors: {
           bg: bgColor,
           index: indexColor,
-          hover: theme.hover
+          hover: theme.hover,
         },
         index: {
           top: charArrIndex === charsArr.length - 1 ? numIndex : "",
           bottom: numIndex === 1 ? charsArr[charArrIndex] : "",
         },
         size: cellSize,
-        onClick,
       })
 
       if (i % charsArr.length === 0) {
