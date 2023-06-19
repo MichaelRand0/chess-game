@@ -57,6 +57,7 @@ export const useTable = () => {
           bg: bgColor,
           index: indexColor,
           hover: theme.hover,
+          lastMove: theme.lastMove
         },
         index: {
           top: charArrIndex === charsArr.length - 1 ? numIndex : "",

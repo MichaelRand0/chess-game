@@ -4,11 +4,13 @@ import { useCoords } from "../coords"
 import { useCell } from "../cell"
 import { useEffect } from "react"
 import { usePlayer } from "../player"
+import { useStory } from "../story"
 
 export const useMove = () => {
   const { coords } = useCoords()
   const { cells, setCells, setMarkedCells, setSelectedCell } = useCell()
   const { togglePlayingSide } = usePlayer()
+  const { setLastMoves } = useStory()
   const { charsArr } = coords
   const checkVertical = (currCell: ICell, cells: ICell[]) => {
     const currPiece = currCell?.piece
@@ -193,6 +195,10 @@ export const useMove = () => {
       setMarkedCells([])
       setSelectedCell(null)
       togglePlayingSide()
+      setLastMoves({
+        from: cellFrom.id,
+        to: cellTo.id,
+      })
     }
   }
 

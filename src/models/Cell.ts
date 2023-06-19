@@ -7,6 +7,7 @@ export interface ICell {
     bg: string
     index: string
     hover: string
+    lastMove: string
   }
   index?: {
     top?: string | number
@@ -20,5 +21,6 @@ export interface ISelectedCell extends Omit<ICell, 'onClick'> {}
 export enum HighLightTypes {
   MOVE = 'MOVE',
   SELECTED = 'SELECTED',
-  ATTACK = 'ATTACK'
+  ATTACK = 'ATTACK',
+  LAST_MOVE = 'LAST_MOVE'
 }

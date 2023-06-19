@@ -10,6 +10,7 @@ export const themes = {
     },
     cellBlack: "#779556",
     cellWhite: "#EBECD0",
-    hover: '#B58863'
+    hover: '#B58863',
+    lastMove: '#f0b789'
   },
 }

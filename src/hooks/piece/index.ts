@@ -58,7 +58,6 @@ export const usePiece = () => {
             markedCells.some((item) => item.id === cell?.id) &&
             selectedCell
           ) {
-            console.log("movePiecemovePiece")
             movePiece(selectedCell, cell)
           }
         }
