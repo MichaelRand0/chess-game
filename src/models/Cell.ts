@@ -1,4 +1,4 @@
-import { IPiece } from "./Piece"
+import { IPiece, Side } from "./Piece"
 
 export interface ICell {
   id: string
@@ -14,6 +14,7 @@ export interface ICell {
     bottom?: string | number
   }
   size: number
+  attackedBy: Side[]
 }
 
 export interface ISelectedCell extends Omit<ICell, 'onClick'> {}

@@ -4,7 +4,7 @@ export const initPositions = [
   {
     name: PieceNames.pawn,
     side: Side.white,
-    pos: "a2",
+    pos: "g5",
     movesCount: 0,
   },
   {
@@ -89,7 +89,7 @@ export const initPositions = [
   {
     name: PieceNames.pawn,
     side: Side.black,
-    pos: "b7",
+    pos: "g3",
     movesCount: 0,
   },
   {
@@ -177,20 +177,20 @@ export const initPositions = [
   {
     name: PieceNames.queen,
     side: Side.white,
-    pos: "d1",
+    pos: "e5",
     movesCount: 0,
   },
   {
     name: PieceNames.queen,
     side: Side.black,
-    pos: "d8",
+    pos: "e6",
     movesCount: 0,
   },
 
   {
     name: PieceNames.king,
     side: Side.white,
-    pos: "e1",
+    pos: "e3",
     movesCount: 0,
   },
   {

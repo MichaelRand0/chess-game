@@ -64,6 +64,7 @@ export const useTable = () => {
           bottom: numIndex === 1 ? charsArr[charArrIndex] : "",
         },
         size: cellSize,
+        attackedBy: []
       })
 
       if (i % charsArr.length === 0) {

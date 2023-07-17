@@ -4,14 +4,13 @@ import { useCell } from "../cell"
 import { Side } from "@/models/Piece"
 
 export const useQueen = () => {
-  const { checkDiagonal, checkHorizontal, checkVertical } = useMove()
+  const { getHorizontalMoves, getVerticalMoves, getDiagonalMoves } = useMove()
   const { cells, setSelectedCell, setMarkedCells } = useCell()
 
-  const onClick = (cell: ICell) => {
+  const getMoves = (cell: ICell) => {
     const splittedId = cell.id.split("")
     const char = splittedId[0]
     const num = splittedId[1]
-
     let moves = cells.filter((item) => {
       const itemChar = item.id.split("")[0]
       const itemNum = item.id.split("")[1]
@@ -21,10 +20,21 @@ export const useQueen = () => {
     if (cell?.piece?.side === Side.white) {
       moves = moves.reverse()
     }
+    return moves
+  }
 
-    const verticalMoves = checkVertical(cell, moves)
-    const horizontalMoves = checkHorizontal(cell, moves)
-    const diagonalMoves = checkDiagonal(cell)
+  const onClick = (cell: ICell) => {
+    const moves = getMoves(cell)
+
+    const fakeMoves = getHorizontalMoves(cell).concat(
+      getVerticalMoves(cell),
+      getDiagonalMoves(cell)
+    )
+    console.log("fakeMoves", fakeMoves)
+
+    const verticalMoves = getVerticalMoves(cell)
+    const horizontalMoves = getHorizontalMoves(cell)
+    const diagonalMoves = getDiagonalMoves(cell)
 
     const result = diagonalMoves.concat(verticalMoves, horizontalMoves)
     setSelectedCell(cell)
@@ -33,5 +43,6 @@ export const useQueen = () => {
 
   return {
     onClick,
+    getMoves,
   }
 }

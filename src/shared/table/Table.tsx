@@ -5,6 +5,7 @@ import { useCell } from "@/hooks/cell"
 import { HighLightTypes } from "@/models/Cell"
 import { usePiece } from "@/hooks/piece"
 import { useStory } from "@/hooks/story"
+import { useAttack } from "@/hooks/move/attack"
 
 type Props = {}
 
@@ -12,10 +13,15 @@ const Table = (props: Props) => {
   const { cellSize, initCells } = useTable()
   const { lastMoves } = useStory()
   const { cells, selectedCell, markedCells } = useCell()
+  const {updateAttackedCells} = useAttack()
   const { pieceHandler } = usePiece()
   useEffect(() => {
     initCells()
   }, [cellSize])
+
+  useEffect(() => {
+    updateAttackedCells()
+  }, [cells])
 
   return (
     <div className="flex flex-wrap" style={{ maxWidth: cellSize * 8 }}>

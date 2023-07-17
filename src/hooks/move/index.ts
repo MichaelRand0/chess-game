@@ -2,9 +2,9 @@ import { ICell } from "@/models/Cell"
 import { PieceNames, Side } from "@/models/Piece"
 import { useCoords } from "../coords"
 import { useCell } from "../cell"
-import { useEffect } from "react"
 import { usePlayer } from "../player"
 import { useStory } from "../story"
+import getSplittedId from "@/helpers/getSplittedId"
 
 export const useMove = () => {
   const { coords } = useCoords()
@@ -12,100 +12,146 @@ export const useMove = () => {
   const { togglePlayingSide } = usePlayer()
   const { setLastMoves } = useStory()
   const { charsArr } = coords
-  const checkVertical = (currCell: ICell, cells: ICell[]) => {
-    const currPiece = currCell?.piece
-    const isPawn = currPiece?.name === PieceNames.pawn
-    let arrA = cells?.filter((cell) => {
-      const numOfId = Number(cell?.id.split("")[1])
-      const numOfCurrId = Number(currCell?.id.split("")[1])
-      return numOfId > numOfCurrId
-    })
-    let arrB = cells?.filter((cell) => {
-      const numOfId = Number(cell?.id.split("")[1])
-      const numOfCurrId = Number(currCell?.id.split("")[1])
-      return numOfId < numOfCurrId
-    })
-    if (currCell?.piece?.side === Side.white) {
-      arrB = arrB.reverse()
-    } else {
-      arrA = arrA.reverse()
+
+  const checkMoves = (cell: ICell, moves: ICell[]) => {
+    const piece = cell?.piece
+    switch (piece?.name) {
+      case PieceNames.pawn:
+        return getPawnMoves(cell)
+      case PieceNames.rock:
+        const verticalMoves = getVerticalMoves(cell)
+        const horizontalMoves = getHorizontalMoves(cell)
+        return verticalMoves.concat(horizontalMoves)
+      case PieceNames.bishop:
+        return getDiagonalMoves(cell)
+      case PieceNames.queen:
+        const vertical = getVerticalMoves(cell)
+        const horizontal = getHorizontalMoves(cell)
+        const diagonals = getDiagonalMoves(cell)
+        return vertical.concat(horizontal, diagonals)
+
+      default:
+        return moves
     }
-    const result = []
-    for (let i = 0; i < arrA.length; i++) {
-      if (arrA[i]?.piece) {
-        if (isPawn) {
-          break
-        } else {
-          arrA[i]?.piece?.side === currPiece?.side ? null : result.push(arrA[i])
-          break
-        }
-      } else {
-        result.push(arrA[i])
-      }
-    }
-    for (let i = 0; i < arrB.length; i++) {
-      if (arrB[i]?.piece) {
-        if (isPawn) {
-          break
-        } else {
-          arrB[i]?.piece?.side === currPiece?.side ? null : result.push(arrB[i])
-          break
-        }
-      } else {
-        result.push(arrB[i])
-      }
-    }
-    return result
   }
 
-  const checkHorizontal = (currCell: ICell, cells: ICell[]) => {
-    const currPiece = currCell?.piece
-    let arrA = cells.filter((cell) => {
-      const indexOfChar = charsArr.indexOf(cell?.id.split("")[0])
-      const indexOfCurrChar = charsArr.indexOf(currCell?.id.split("")[0])
-      return indexOfChar < indexOfCurrChar
-    })
-    let arrB = cells.filter((cell) => {
-      const indexOfChar = charsArr.indexOf(cell?.id.split("")[0])
-      const indexOfCurrChar = charsArr.indexOf(currCell?.id.split("")[0])
-      return indexOfChar > indexOfCurrChar
-    })
-    if (currCell?.piece?.side === Side.white) {
-      arrA = arrA.reverse()
-    } else {
-      arrB = arrB.reverse()
-    }
-    const result = []
-    for (let i = 0; i < arrA.length; i++) {
-      if (arrA[i]?.piece) {
-        arrA[i]?.piece?.side === currPiece?.side ? null : result.push(arrA[i])
+  const getPawnMoves = (cell: ICell) => {
+    const { id, piece } = cell
+    const { char, num } = getSplittedId(id)
+    const moves = []
+    const counter = (x: number) => (piece?.side === Side.white ? x : x * -1)
+    for (
+      let i = num + counter(1);
+      true;
+      piece?.side === Side.white ? i++ : i--
+    ) {
+      const cellId = `${char}${i}`
+      const cell = cells.filter((item) => item.id === cellId)[0]
+      if (cell?.piece) {
+        break
+      }
+      if (piece?.movesCount ?? 0 > 0) {
+        if (cell?.piece) {
+          break
+        }
+        moves.push(cell)
         break
       } else {
-        result.push(arrA[i])
+        if (i === num + counter(2)) {
+          moves.push(cell)
+          break
+        }
+        moves.push(cell)
+        continue
       }
     }
-    for (let i = 0; i < arrB.length; i++) {
-      if (arrB[i]?.piece) {
-        arrB[i]?.piece?.side === currPiece?.side ? null : result.push(arrB[i])
-        break
-      } else {
-        result.push(arrB[i])
-      }
-    }
-    return result
+    return moves
   }
 
-  const checkDiagonal = (currCell: ICell) => {
+  const getVerticalMoves = (cell: ICell, withCollisions: boolean = true) => {
+    const { id, piece } = cell
+    const { char, num } = getSplittedId(id)
+    const res = cells.filter((item) => getSplittedId(item.id).char === char)
+    if (withCollisions) {
+      const resCollisions = []
+      for (let i = num - 1; i > 0; i--) {
+        const newId = `${char}${i}`
+        const newCell = cells.filter((cellItem) => cellItem.id === newId)[0]
+        if (newCell?.piece) {
+          if (newCell?.piece.side === piece?.side) {
+            break
+          }
+          resCollisions.push(newCell)
+          break
+        }
+        resCollisions.push(newCell)
+        continue
+      }
+      for (let i = num + 1; i <= 8; i++) {
+        const newId = `${char}${i}`
+        const newCell = cells.filter((cellItem) => cellItem.id === newId)[0]
+        if (newCell?.piece) {
+          if (newCell?.piece.side === piece?.side) {
+            break
+          }
+          resCollisions.push(newCell)
+          break
+        }
+        resCollisions.push(newCell)
+        continue
+      }
+      return resCollisions
+    }
+    return res
+  }
+
+  const getHorizontalMoves = (cell: ICell, withCollisions: boolean = true) => {
+    const { id, piece } = cell
+    const { char, num } = getSplittedId(id)
+    const res = cells.filter((item) => getSplittedId(item.id).num === num)
+    if (withCollisions) {
+      const resCollisions = []
+      for (let i = charsArr.indexOf(char) - 1; i !== 1; i--) {
+        const newId = `${charsArr[i]}${num}`
+        const newCell = cells.filter((cellItem) => cellItem.id === newId)[0]
+        if (newCell?.piece) {
+          if (newCell?.piece.side === piece?.side) {
+            break
+          }
+          resCollisions.push(newCell)
+          break
+        }
+        resCollisions.push(newCell)
+        continue
+      }
+      for (let i = charsArr.indexOf(char) + 1; i !== 8; i++) {
+        const newId = `${charsArr[i]}${num}`
+        const newCell = cells.filter((cellItem) => cellItem.id === newId)[0]
+        if (newCell?.piece) {
+          if (newCell?.piece.side === piece?.side) {
+            break
+          }
+          resCollisions.push(newCell)
+          break
+        }
+        resCollisions.push(newCell)
+        continue
+      }
+      return resCollisions
+    }
+    return res
+  }
+
+  const getDiagonalMoves = (currCell: ICell, withCollisions = true) => {
     const directions = [
       { x: 1, y: 1 },
       { x: 1, y: -1 },
       { x: -1, y: 1 },
       { x: -1, y: -1 },
     ]
-    const currPiece = currCell?.piece
-    const char = currCell.id.split("")[0]
+    const { id, piece } = currCell
+    const { char, num } = getSplittedId(id)
     const indexOfChar = charsArr.indexOf(char)
-    const num = Number(currCell.id.split("")[1])
     const result: ICell[] = []
     directions.forEach((dir) => {
       const { x: initX, y: initY } = dir
@@ -116,17 +162,19 @@ export const useMove = () => {
         const newNum = num + y
         const id = `${newChar}${newNum}`
         const cell = cells.find((cell) => cell.id === id)
-        const piece = cell?.piece
         if (cell) {
           x = x < 0 ? x - 1 : x + 1
           y = y < 0 ? y - 1 : y + 1
-          if (piece) {
-            if (piece?.side !== currPiece?.side) {
+          if (withCollisions) {
+            if (cell?.piece) {
+              if (cell?.piece?.side === piece?.side) {
+                break
+              }
               result.push(cell)
               break
-            } else {
-              break
             }
+            result.push(cell)
+            continue
           }
           result.push(cell)
           continue
@@ -137,34 +185,6 @@ export const useMove = () => {
     })
     return result
   }
-
-  const checkMoves = (cell: ICell, moves: ICell[]) => {
-    const piece = cell?.piece
-    switch (piece?.name) {
-      case PieceNames.pawn:
-        return checkVertical(cell, moves)
-      case PieceNames.rock:
-        const verticalMoves = checkVertical(cell, moves)
-        const horizontalMoves = checkHorizontal(cell, moves)
-        return verticalMoves.concat(horizontalMoves)
-      case PieceNames.bishop:
-        return checkDiagonal(cell)
-      case PieceNames.queen:
-        const vertical = checkVertical(cell, moves)
-        const horizontal = checkHorizontal(cell, moves)
-        const diagonals = checkDiagonal(cell)
-        return vertical.concat(horizontal, diagonals)
-
-      default:
-        return moves
-    }
-  }
-
-  useEffect(() => {
-    if (cells.length > 0) {
-      checkDiagonal(cells[2])
-    }
-  }, [cells])
 
   const movePiece = (cellFrom: ICell, cellTo: ICell) => {
     const pieceFrom = cellFrom?.piece
@@ -190,7 +210,6 @@ export const useMove = () => {
         }
         return item
       })
-      console.log("newCells", newCells)
       setCells(newCells)
       setMarkedCells([])
       setSelectedCell(null)
@@ -203,10 +222,11 @@ export const useMove = () => {
   }
 
   return {
-    checkVertical,
-    checkHorizontal,
-    checkDiagonal,
     checkMoves,
     movePiece,
+    getVerticalMoves,
+    getHorizontalMoves,
+    getDiagonalMoves,
+    getPawnMoves,
   }
 }
