@@ -6,13 +6,18 @@ export const useRock = () => {
   const { checkMoves } = useMove()
   const { setMarkedCells, setSelectedCell } = useCell()
 
+  const getMoves = (cell: ICell) => {
+    return checkMoves(cell)
+  }
+
   const onClick = (cell: ICell) => {
-    const result = checkMoves(cell)
+    const result = getMoves(cell)
     setSelectedCell(cell)
     setMarkedCells(result)
   }
 
   return {
     onClick,
+    getMoves,
   }
 }

@@ -3,17 +3,21 @@ import { useMove } from "../move"
 import { useCell } from "../cell"
 
 export const useBishop = () => {
+  const { checkMoves } = useMove()
+  const { setMarkedCells, setSelectedCell } = useCell()
 
-  const {checkMoves} = useMove()
-  const {setMarkedCells, setSelectedCell} = useCell()
+  const getMoves = (cell: ICell) => {
+    return checkMoves(cell)
+  }
 
-  const onClick = (cell:ICell) => {
-    const moves = checkMoves(cell)
+  const onClick = (cell: ICell) => {
+    const moves = getMoves(cell)
     setSelectedCell(cell)
     setMarkedCells(moves)
   }
 
   return {
-    onClick
+    onClick,
+    getMoves,
   }
 }

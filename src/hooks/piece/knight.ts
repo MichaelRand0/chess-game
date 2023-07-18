@@ -3,10 +3,10 @@ import { useCoords } from "../coords"
 import { useCell } from "../cell"
 
 export const useKnight = () => {
-  const {setMarkedCells, setSelectedCell} = useCell()
+  const { setMarkedCells, setSelectedCell } = useCell()
   const { getCellByCoords, coords } = useCoords()
   const { charsArr } = coords
-  const onClick = (cell: ICell) => {
+  const getMoves = (cell: ICell) => {
     const coords = [
       {
         y: 2,
@@ -49,12 +49,19 @@ export const useKnight = () => {
     coords.forEach((coord) => {
       result.push(getCellByCoords(indexOfChar + coord.x, num + coord.y))
     })
-    result = result.filter(item => item && item?.piece?.side !== cell.piece?.side)
+    result = result.filter(
+      (item) => item && item?.piece?.side !== cell.piece?.side
+    )
+    return result
+  }
+  const onClick = (cell: ICell) => {
+    const result = getMoves(cell)
     setMarkedCells(result)
     setSelectedCell(cell)
   }
 
   return {
     onClick,
+    getMoves,
   }
 }

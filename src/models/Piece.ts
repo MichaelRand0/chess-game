@@ -1,4 +1,5 @@
 import { Theme } from "@/hooks/theme/types"
+import { ICell } from "./Cell"
 
 export enum Side {
   white = 'white',
@@ -12,6 +13,12 @@ export enum PieceNames {
   bishop = 'bishop',
   knight = 'knight',
   rock = 'rock'
+}
+
+export type PieceLogic = {
+  onClick: (cell: ICell) => void
+  getMoves?: (cell: ICell) => ICell[]
+  getAttackMoves?: (cell: ICell) => ICell[]
 }
 
 export interface IFigure {

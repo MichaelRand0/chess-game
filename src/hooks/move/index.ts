@@ -111,7 +111,7 @@ export const useMove = () => {
     const res = cells.filter((item) => getSplittedId(item.id).num === num)
     if (withCollisions) {
       const resCollisions = []
-      for (let i = charsArr.indexOf(char) - 1; i !== 1; i--) {
+      for (let i = charsArr.indexOf(char) - 1; i >= 0; i--) {
         const newId = `${charsArr[i]}${num}`
         const newCell = cells.filter((cellItem) => cellItem.id === newId)[0]
         if(!newCell) {

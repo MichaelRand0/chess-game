@@ -18,7 +18,7 @@ export const useQueen = () => {
   const onClick = (cell: ICell) => {
 
     const fakeMoves = getMoves(cell)
-    console.log("fakeMoves", fakeMoves)
+    // console.log("fakeMoves", fakeMoves)
     const result = getMoves(cell)
     setSelectedCell(cell)
     setMarkedCells(result)

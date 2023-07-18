@@ -1,4 +1,4 @@
-import { PieceNames } from "@/models/Piece"
+import { PieceLogic, PieceNames } from "@/models/Piece"
 import { usePawn } from "./pawn"
 import { useKnight } from "./knight"
 import { useBishop } from "./bishop"
@@ -23,7 +23,7 @@ export const usePiece = () => {
     useCell()
   const { player, playingSide } = usePlayer()
 
-  const getPiece = (name: PieceNames) => {
+  const getPiece = (name: PieceNames):PieceLogic => {
     switch (name) {
       case PieceNames.pawn:
         return pawn
@@ -39,7 +39,7 @@ export const usePiece = () => {
         return king
 
       default:
-        break
+        return pawn
     }
   }
 

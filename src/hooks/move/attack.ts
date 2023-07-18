@@ -16,22 +16,23 @@ export const useAttack = () => {
         const pieceLogic = getPiece(name)
         const isPawn = name === PieceNames.pawn
 
-        const { getAttackMoves, getMoves } = pieceLogic
-        if (getAttackMoves || getMoves) {
-          let moves = getAttackMoves ? getAttackMoves(cell) : getMoves(cell)
+        let moves = pieceLogic?.getAttackMoves
+          ? pieceLogic?.getAttackMoves(cell)
+          : pieceLogic?.getMoves
+          ? pieceLogic?.getMoves(cell)
+          : []
+        if (moves) {
           // console.log('piece', piece)
           // console.log('moves', moves)
           moves = moves.filter((move) => move)
           // console.log("moves", moves)
           // console.log("cell", cell)
           moves.forEach((move) => {
-            newCells = newCells.map((newCell) => {
+            newCells = newCells.map((newCell: any) => {
               if (move.id === newCell.id) {
                 return {
                   ...move,
-                  attackedBy: [
-                    ...new Set([...newCell.attackedBy, cell?.id]),
-                  ],
+                  attackedBy: [...new Set([...newCell.attackedBy, cell?.id])],
                 }
               } else {
                 return newCell
