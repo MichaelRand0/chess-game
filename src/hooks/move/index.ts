@@ -13,7 +13,7 @@ export const useMove = () => {
   const { setLastMoves } = useStory()
   const { charsArr } = coords
 
-  const checkMoves = (cell: ICell, moves: ICell[]) => {
+  const checkMoves = (cell: ICell) => {
     const piece = cell?.piece
     switch (piece?.name) {
       case PieceNames.pawn:
@@ -31,7 +31,7 @@ export const useMove = () => {
         return vertical.concat(horizontal, diagonals)
 
       default:
-        return moves
+        return []
     }
   }
 
@@ -114,6 +114,9 @@ export const useMove = () => {
       for (let i = charsArr.indexOf(char) - 1; i !== 1; i--) {
         const newId = `${charsArr[i]}${num}`
         const newCell = cells.filter((cellItem) => cellItem.id === newId)[0]
+        if(!newCell) {
+          break
+        }
         if (newCell?.piece) {
           if (newCell?.piece.side === piece?.side) {
             break

@@ -4,11 +4,11 @@ import { useCell } from "../cell"
 
 export const useBishop = () => {
 
-  const {checkDiagonal} = useMove()
+  const {checkMoves} = useMove()
   const {setMarkedCells, setSelectedCell} = useCell()
 
   const onClick = (cell:ICell) => {
-    const moves = checkDiagonal(cell)
+    const moves = checkMoves(cell)
     setSelectedCell(cell)
     setMarkedCells(moves)
   }

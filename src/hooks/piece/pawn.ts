@@ -22,7 +22,7 @@ export const usePawn = () => {
       : movesCount === 0
       ? [getCellByCoords(x, y - 1), getCellByCoords(x, y - 2)]
       : [getCellByCoords(x, y - 1)]
-    moves = checkMoves(cell, moves)
+    moves = checkMoves(cell)
     return moves
   }
 

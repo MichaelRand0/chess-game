@@ -41,7 +41,7 @@ export const useAttack = () => {
         }
       }
     })
-    // console.log("newCells", newCells)
+    console.log("newCells", newCells)
   }
 
   const returnCheckedKings = (cells: ICell[]) => {
