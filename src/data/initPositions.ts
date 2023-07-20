@@ -183,7 +183,7 @@ export const initPositions = [
   {
     name: PieceNames.queen,
     side: Side.black,
-    pos: "e6",
+    pos: "f6",
     movesCount: 0,
   },
 

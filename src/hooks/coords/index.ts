@@ -1,6 +1,7 @@
 import { RootState } from "@/redux/store"
 import { useSelector } from "react-redux"
 import { useCell } from "../cell"
+import { ICell } from "@/models/Cell"
 
 export const useCoords = () => {
   const configSelector = useSelector((state: RootState) => state.config)
@@ -8,9 +9,9 @@ export const useCoords = () => {
   const { charsArr } = coords
   const { cells } = useCell()
 
-  const getCellByCoords = (x: number, y: number) => {
+  const getCellByCoords = (x: number, y: number, table: ICell[] = cells) => {
     const id = `${charsArr[x]}${y}`
-    return cells.filter((cell) => cell.id === id)[0]
+    return table.filter((cell) => cell.id === id)[0]
   }
   const getCoordsById = (id: string) => {
     const splitted = id.split("")

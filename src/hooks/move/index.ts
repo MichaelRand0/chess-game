@@ -7,9 +7,16 @@ import { useStory } from "../story"
 import getSplittedId from "@/helpers/getSplittedId"
 
 export const useMove = () => {
-  const { coords } = useCoords()
-  const { cells, setCells, setMarkedCells, setSelectedCell } = useCell()
-  const { togglePlayingSide } = usePlayer()
+  const { coords, getCoordsById, getCellByCoords } = useCoords()
+  const {
+    cells,
+    setCells,
+    setMarkedCells,
+    setSelectedCell,
+    selectedCell,
+    markedCells,
+  } = useCell()
+  const { togglePlayingSide, player, playingSide } = usePlayer()
   const { setLastMoves } = useStory()
   const { charsArr } = coords
 
@@ -35,7 +42,7 @@ export const useMove = () => {
     }
   }
 
-  const getPawnMoves = (cell: ICell) => {
+  const getPawnMoves = (cell: ICell, table = cells) => {
     const { id, piece } = cell
     const { char, num } = getSplittedId(id)
     const moves = []
@@ -46,7 +53,7 @@ export const useMove = () => {
       piece?.side === Side.white ? i++ : i--
     ) {
       const cellId = `${char}${i}`
-      const cell = cells.filter((item) => item.id === cellId)[0]
+      const cell = table.filter((item) => item.id === cellId)[0]
       if (cell?.piece) {
         break
       }
@@ -65,18 +72,128 @@ export const useMove = () => {
         continue
       }
     }
-    return moves
+    const { x, y } = getCoordsById(cell.id)
+    let attackMoves = []
+    const isWhite = piece?.side === Side.white
+    attackMoves = isWhite
+      ? [getCellByCoords(x - 1, y + 1), getCellByCoords(x + 1, y + 1)]
+      : [getCellByCoords(x - 1, y - 1), getCellByCoords(x + 1, y - 1)]
+    attackMoves = attackMoves.filter(
+      (move) => move?.piece && move?.piece?.side !== cell?.piece?.side
+    )
+    return {
+      moves: moves.concat(attackMoves),
+      attackMoves,
+    }
   }
 
-  const getVerticalMoves = (cell: ICell, withCollisions: boolean = true) => {
+  const getQueenMoves = (cell: ICell, table: ICell[] = cells) => {
+    const verticalMoves = getVerticalMoves(cell, table)
+    const horizontalMoves = getHorizontalMoves(cell, table)
+    const diagonalMoves = getDiagonalMoves(cell, table)
+    const moves = diagonalMoves.concat(verticalMoves, horizontalMoves)
+    return {
+      moves,
+    }
+  }
+
+  const getBishopMoves = (cell: ICell, table: ICell[] = cells) => {
+    const moves = getDiagonalMoves(cell, table)
+    return {
+      moves,
+    }
+  }
+
+  const getRockMoves = (cell: ICell, table: ICell[] = cells) => {
+    const verticalMoves = getVerticalMoves(cell, table)
+    const horizontalMoves = getHorizontalMoves(cell, table)
+    return {
+      moves: verticalMoves.concat(horizontalMoves),
+    }
+  }
+
+  const getKnightMoves = (cell: ICell, table: ICell[] = cells) => {
+    const coords = [
+      {
+        y: 2,
+        x: -1,
+      },
+      {
+        y: 2,
+        x: 1,
+      },
+      {
+        y: -2,
+        x: -1,
+      },
+      {
+        y: -2,
+        x: 1,
+      },
+      {
+        y: 1,
+        x: -2,
+      },
+      {
+        y: 1,
+        x: 2,
+      },
+      {
+        y: -1,
+        x: 2,
+      },
+      {
+        y: -1,
+        x: -2,
+      },
+    ]
+    const id = cell.id
+    const char = id.split("")[0]
+    const num = Number(id.split("")[1])
+    const indexOfChar = charsArr.indexOf(char)
+    let moves: ICell[] = []
+    coords.forEach((coord) => {
+      moves.push(getCellByCoords(indexOfChar + coord.x, num + coord.y, table))
+    })
+    moves = moves.filter(
+      (item) => item && item?.piece?.side !== cell.piece?.side
+    )
+    return {
+      moves,
+    }
+  }
+
+  const getKingMoves = (cell: ICell, table: ICell[] = cells) => {
+    const coords = getCoordsById(cell.id)
+    let { x, y } = coords
+    const moves = [
+      getCellByCoords(x, y + 1, table),
+      getCellByCoords(x, y - 1, table),
+      getCellByCoords(x + 1, y, table),
+      getCellByCoords(x - 1, y, table),
+      getCellByCoords(x - 1, y - 1, table),
+      getCellByCoords(x + 1, y + 1, table),
+      getCellByCoords(x - 1, y + 1, table),
+      getCellByCoords(x + 1, y - 1, table),
+    ].filter((move) => move && move?.piece?.side !== cell?.piece?.side)
+    return {
+      moves,
+    }
+  }
+
+  const getVerticalMoves = (
+    cell: ICell,
+    table: ICell[] = cells,
+    withCollisions: boolean = true
+  ) => {
     const { id, piece } = cell
     const { char, num } = getSplittedId(id)
-    const res = cells.filter((item) => getSplittedId(item.id).char === char)
+    const res = table.filter((item) => getSplittedId(item.id).char === char)
     if (withCollisions) {
       const resCollisions = []
       for (let i = num - 1; i > 0; i--) {
         const newId = `${char}${i}`
-        const newCell = cells.filter((cellItem) => cellItem.id === newId)[0]
+        const newCell = table.filter((cellItem) => cellItem.id === newId)[0]
         if (newCell?.piece) {
           if (newCell?.piece.side === piece?.side) {
             break
@@ -89,7 +206,7 @@ export const useMove = () => {
       }
       for (let i = num + 1; i <= 8; i++) {
         const newId = `${char}${i}`
-        const newCell = cells.filter((cellItem) => cellItem.id === newId)[0]
+        const newCell = table.filter((cellItem) => cellItem.id === newId)[0]
         if (newCell?.piece) {
           if (newCell?.piece.side === piece?.side) {
             break
@@ -105,16 +222,20 @@ export const useMove = () => {
     return res
   }
 
-  const getHorizontalMoves = (cell: ICell, withCollisions: boolean = true) => {
+  const getHorizontalMoves = (
+    cell: ICell,
+    table: ICell[] = cells,
+    withCollisions: boolean = true
+  ) => {
     const { id, piece } = cell
     const { char, num } = getSplittedId(id)
-    const res = cells.filter((item) => getSplittedId(item.id).num === num)
+    const res = table.filter((item) => getSplittedId(item.id).num === num)
     if (withCollisions) {
       const resCollisions = []
       for (let i = charsArr.indexOf(char) - 1; i >= 0; i--) {
         const newId = `${charsArr[i]}${num}`
-        const newCell = cells.filter((cellItem) => cellItem.id === newId)[0]
-        if(!newCell) {
+        const newCell = table.filter((cellItem) => cellItem.id === newId)[0]
+        if (!newCell) {
           break
         }
         if (newCell?.piece) {
@@ -129,7 +250,7 @@ export const useMove = () => {
       }
       for (let i = charsArr.indexOf(char) + 1; i !== 8; i++) {
         const newId = `${charsArr[i]}${num}`
-        const newCell = cells.filter((cellItem) => cellItem.id === newId)[0]
+        const newCell = table.filter((cellItem) => cellItem.id === newId)[0]
         if (newCell?.piece) {
           if (newCell?.piece.side === piece?.side) {
             break
@@ -145,7 +266,11 @@ export const useMove = () => {
     return res
   }
 
-  const getDiagonalMoves = (currCell: ICell, withCollisions = true) => {
+  const getDiagonalMoves = (
+    currCell: ICell,
+    table: ICell[] = cells,
+    withCollisions = true
+  ) => {
     const directions = [
       { x: 1, y: 1 },
       { x: 1, y: -1 },
@@ -164,7 +289,7 @@ export const useMove = () => {
         const newChar = charsArr[indexOfChar + x]
         const newNum = num + y
         const id = `${newChar}${newNum}`
-        const cell = cells.find((cell) => cell.id === id)
+        const cell = table.find((cell) => cell.id === id)
         if (cell) {
           x = x < 0 ? x - 1 : x + 1
           y = y < 0 ? y - 1 : y + 1
@@ -187,6 +312,74 @@ export const useMove = () => {
       }
     })
     return result
+  }
+
+  const onClick = (cell: ICell, moves?: ICell[]) => {
+    const result = filterCheckMoves(cell, moves ?? [])
+    if (player.side === playingSide) {
+      const piece = cell?.piece
+      if (selectedCell?.id === cell.id) {
+        setSelectedCell(null)
+        setMarkedCells([])
+      } else {
+        if (cell?.piece?.side === player.side && piece) {
+          setSelectedCell(cell)
+          setMarkedCells(result)
+        } else {
+          if (
+            markedCells.some((item) => item.id === cell?.id) &&
+            selectedCell
+          ) {
+            movePiece(selectedCell, cell)
+          }
+        }
+      }
+    }
+  }
+
+  const getMoves = (
+    cell: ICell,
+    table: ICell[] = cells
+  ): { moves: ICell[]; attackMoves?: ICell[] } => {
+    const pieceName = cell?.piece?.name
+    switch (pieceName) {
+      case PieceNames.pawn:
+        return getPawnMoves(cell, table)
+      case PieceNames.queen:
+        return getQueenMoves(cell, table)
+      case PieceNames.king:
+        return getKingMoves(cell, table)
+      case PieceNames.bishop:
+        return getBishopMoves(cell, table)
+      case PieceNames.knight:
+        return getKnightMoves(cell, table)
+      case PieceNames.rock:
+        return getRockMoves(cell, table)
+
+      default:
+        return getPawnMoves(cell, table)
+    }
+  }
+
+  const pieceHandler = (cell: ICell) => {
+    const pieceName = cell?.piece?.name
+    switch (pieceName) {
+      case PieceNames.pawn:
+        return onClick(cell, getPawnMoves(cell).moves)
+      case PieceNames.queen:
+        return onClick(cell, getQueenMoves(cell).moves)
+      case PieceNames.king:
+        return onClick(cell, getKingMoves(cell).moves)
+      case PieceNames.bishop:
+        return onClick(cell, getBishopMoves(cell).moves)
+      case PieceNames.knight:
+        return onClick(cell, getKnightMoves(cell).moves)
+      case PieceNames.rock:
+        return onClick(cell, getRockMoves(cell).moves)
+
+      default:
+        return onClick(cell)
+    }
   }
 
   const movePiece = (cellFrom: ICell, cellTo: ICell) => {
@@ -224,12 +417,87 @@ export const useMove = () => {
     }
   }
 
+  const getAttackedCells = (cellsCopy: ICell[]) => {
+    let newCells: ICell[] = []
+    cellsCopy.forEach((cell) => {
+      const piece = cell?.piece
+      if (piece) {
+        const name = piece.name
+        const isPawn = name === PieceNames.pawn
+        const { moves: initMoves, attackMoves } = getMoves(cell, cellsCopy)
+        let moves = isPawn ? attackMoves : attackMoves ? attackMoves : initMoves
+        if (moves) {
+          // console.log('moves', moves)
+          moves = moves.filter((move) => move)
+          // console.log('moves',moves)
+          moves.forEach((item) => newCells.push(item))
+          // moves.forEach((move) => {
+          //   newCells.forEach((newCell: any) => {
+          //     if (move.id === newCell.id) {
+          //       return {
+          //         ...move,
+          //         attackedBy: [...new Set([...newCell.attackedBy, cell?.id])],
+          //       }
+          //     } else {
+          //       return newCell
+          //     }
+          //   })
+          // })
+        }
+      }
+    })
+    // console.log('newCells',newCells)
+    // const arrUniq = [...new Map(newCells.map(v => [v.id, v])).values()]
+    // console.log('arrUniq', arrUniq)
+    return newCells
+  }
+
+  const filterCheckMoves = (cell: ICell, markedMoves: ICell[]) => {
+    const result: ICell[] = []
+    markedMoves.forEach((move) => {
+      let fakeTable = [...cells]
+      fakeTable = fakeTable.map((item) => {
+        if (item.id === cell.id) {
+          return {
+            ...cell,
+            piece: null,
+          }
+        }
+        if (item.id === move.id) {
+          return {
+            ...move,
+            piece: {
+              ...cell.piece,
+              pos: move.id,
+            },
+          }
+        }
+        return item
+      })
+      // console.log('fakeTable',fakeTable)
+      const attackedCells = getAttackedCells(fakeTable)
+      const isKingChecked = attackedCells.some(
+        (attackedCell) =>
+          cell?.piece?.side === attackedCell?.piece?.side &&
+          attackedCell?.piece?.name === PieceNames.king
+      )
+      if (!isKingChecked) {
+        result.push(move)
+      }
+    })
+    return result
+  }
+
   return {
     checkMoves,
     movePiece,
     getVerticalMoves,
     getHorizontalMoves,
     getDiagonalMoves,
+    pieceHandler,
     getPawnMoves,
+    getQueenMoves,
+    getMoves,
+    getAttackedCells,
   }
 }

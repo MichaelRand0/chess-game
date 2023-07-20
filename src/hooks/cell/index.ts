@@ -6,14 +6,14 @@ import { cellsSlice } from "@/redux/slices/cells.slice"
 export const useCell = () => {
   const dispatch = useDispatch()
   const cellsSelector = useSelector((state: RootState) => state.cells)
-  const { cells, markedCells, selectedCell } = cellsSelector
+  const { cells, markedCells, selectedCell, attackedCells } = cellsSelector
   const actions = bindActionCreators(
     {
       ...cellsSlice.actions,
     },
     dispatch
   )
-  const { setCells, setMarkedCells, setSelectedCell } = actions
+  const { setCells, setMarkedCells, setSelectedCell, setAttackedCells } = actions
 
   return {
     cells,
@@ -22,5 +22,7 @@ export const useCell = () => {
     selectedCell,
     setSelectedCell,
     markedCells,
+    attackedCells,
+    setAttackedCells
   }
 }

@@ -17,6 +17,10 @@ export interface ICell {
   attackedBy: Side[]
 }
 
+export interface IAttackedCell extends ICell {
+  attackedBy: Side[]
+}
+
 export interface ISelectedCell extends Omit<ICell, 'onClick'> {}
 
 export enum HighLightTypes {
