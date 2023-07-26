@@ -102,13 +102,13 @@ export const initPositions = [
   {
     name: PieceNames.knight,
     side: Side.white,
-    pos: "b1",
+    pos: "b3",
     movesCount: 0,
   },
   {
     name: PieceNames.knight,
     side: Side.white,
-    pos: "g1",
+    pos: "g4",
     movesCount: 0,
   },
   {
@@ -127,13 +127,13 @@ export const initPositions = [
   {
     name: PieceNames.bishop,
     side: Side.white,
-    pos: "c1",
+    pos: "c3",
     movesCount: 0,
   },
   {
     name: PieceNames.bishop,
     side: Side.white,
-    pos: "f1",
+    pos: "f3",
     movesCount: 0,
   },
   {
@@ -190,7 +190,7 @@ export const initPositions = [
   {
     name: PieceNames.king,
     side: Side.white,
-    pos: "e3",
+    pos: "e1",
     movesCount: 0,
   },
   {

@@ -22,6 +22,8 @@ export const playerSlice = createSlice({
     togglePlayingSide(state) {
       state.playingSide =
         state.playingSide === Side.white ? Side.black : Side.white
+        state.player.side =
+        state.player.side === Side.white ? Side.black : Side.white
     },
   },
 })
