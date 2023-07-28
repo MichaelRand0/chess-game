@@ -6,6 +6,7 @@ import { usePlayer } from "../player"
 import { useStory } from "../story"
 import getSplittedId from "@/helpers/getSplittedId"
 import { useEffect } from "react"
+import { useModal } from "../modal"
 
 export const useMove = () => {
   const { coords, getCoordsById, getCellByCoords } = useCoords()
@@ -18,6 +19,7 @@ export const useMove = () => {
     markedCells,
   } = useCell()
   const { togglePlayingSide, player, playingSide } = usePlayer()
+  const {setCurrentModal} = useModal()
   const { setLastMoves } = useStory()
   const { charsArr } = coords
 
@@ -426,6 +428,7 @@ export const useMove = () => {
 
   const onClick = (cell: ICell, moves?: ICell[]) => {
     let result = filterCheckMoves(cell, moves ?? [])
+    const {num, char} = getSplittedId(cell?.id)
     if (selectedCell?.piece?.name === PieceNames.king) {
       const rocks = checkCastling(selectedCell)
       if (rocks.filter((rockCell) => rockCell.id === cell.id).length > 0) {
@@ -437,6 +440,11 @@ export const useMove = () => {
       result = result.concat(checkCastling(cell))
     }
     if (player.side === playingSide) {
+      if(selectedCell?.piece?.name === PieceNames.pawn) {
+        if(selectedCell?.piece?.side === Side.white && num === 8 || selectedCell?.piece?.side === Side.black && num === 1) {
+          setCurrentModal('newPiece')
+        }
+      }
       const piece = cell?.piece
       if (selectedCell?.id === cell.id) {
         setSelectedCell(null)
@@ -485,17 +493,17 @@ export const useMove = () => {
     const pieceName = cell?.piece?.name
     switch (pieceName) {
       case PieceNames.pawn:
-        return onClick(cell, getPawnMoves(cell).moves)
+        return onClick(cell, getPawnMoves(cell).moves.filter(item => item))
       case PieceNames.queen:
-        return onClick(cell, getQueenMoves(cell).moves)
+        return onClick(cell, getQueenMoves(cell).moves.filter(item => item))
       case PieceNames.king:
-        return onClick(cell, getKingMoves(cell).moves)
+        return onClick(cell, getKingMoves(cell).moves.filter(item => item))
       case PieceNames.bishop:
-        return onClick(cell, getBishopMoves(cell).moves)
+        return onClick(cell, getBishopMoves(cell).moves.filter(item => item))
       case PieceNames.knight:
-        return onClick(cell, getKnightMoves(cell).moves)
+        return onClick(cell, getKnightMoves(cell).moves.filter(item => item))
       case PieceNames.rock:
-        return onClick(cell, getRockMoves(cell).moves)
+        return onClick(cell, getRockMoves(cell).moves.filter(item => item))
 
       default:
         return onClick(cell)

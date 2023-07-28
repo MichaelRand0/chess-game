@@ -4,26 +4,34 @@ import { useTable } from "@/hooks/table"
 import { useCell } from "@/hooks/cell"
 import { HighLightTypes } from "@/models/Cell"
 import { useStory } from "@/hooks/story"
-import { useAttack } from "@/hooks/move/attack"
 import { useMove } from "@/hooks/move"
+import ModalContainer from "@/modules/modal/ModalContainer"
+import { useModal } from "@/hooks/modal"
+import { useConfig } from "@/hooks/config"
 
 type Props = {}
 
 const Table = (props: Props) => {
-  const { cellSize, initCells } = useTable()
+  const { initCells } = useTable()
   const { lastMoves } = useStory()
   const { cells, selectedCell, markedCells } = useCell()
   const { pieceHandler } = useMove()
+  const { currentModal } = useModal()
+  const { size } = useConfig()
   useEffect(() => {
     initCells()
-  }, [cellSize])
+  }, [])
 
-  useEffect(() => {
-    console.log('cells', cells)
-  }, [cells])
+  // useEffect(() => {
+  //   console.log('cells', cells)
+  // }, [cells])
 
   return (
-    <div className="flex flex-wrap" style={{ maxWidth: cellSize * 8 }}>
+    <div
+      className="flex flex-wrap relative"
+      style={{ maxWidth: size.cell * 8 }}
+    >
+      {currentModal && <ModalContainer currentModal={currentModal} />}
       {cells.map((cell) => {
         const isEmptyCell = !cell?.piece
         const isCellMarked = markedCells.some((item) => item.id === cell.id)
@@ -44,6 +52,7 @@ const Table = (props: Props) => {
           <Cell
             highlightType={highlightType}
             {...cell}
+            size={size}
             onClick={() => pieceHandler(cell)}
           />
         )

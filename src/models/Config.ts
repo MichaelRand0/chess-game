@@ -11,3 +11,8 @@ export type Coords = {
   verticalCount: number
   charsArr: string[]
 }
+
+export type Size = {
+  cell: number
+  figure: number
+}

@@ -1,5 +1,6 @@
 import { Theme } from "@/hooks/theme/types"
 import { ICell } from "./Cell"
+import { Size } from "./Config"
 
 export enum Side {
   white = 'white',

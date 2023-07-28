@@ -5,7 +5,7 @@ export interface ICell {
   piece: IPiece | null
   colors: {
     bg: string
-    index: string
+    index?: string
     hover: string
     lastMove: string
   }
@@ -13,7 +13,6 @@ export interface ICell {
     top?: string | number
     bottom?: string | number
   }
-  size: number
   attackedBy: Side[]
 }
 

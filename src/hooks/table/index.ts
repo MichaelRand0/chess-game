@@ -1,22 +1,15 @@
 import { ICell } from "@/models/Cell"
-import { useEffect, useState } from "react"
 import { useCoords } from "../coords"
 import { useConfig } from "../config"
 import { useCell } from "../cell"
 import { useTheme } from "../theme"
 
 export const useTable = () => {
-  const [cellSize, setCellSize] = useState(0)
 
   const { coords } = useCoords()
   const { piecePositions } = useConfig()
   const { setCells } = useCell()
   const { theme } = useTheme()
-
-  useEffect(() => {
-    const width = window.screen.width
-    setCellSize(width * 0.45 * 0.125)
-  }, [])
 
   const initCells = () => {
     const newCells: ICell[] = []
@@ -28,8 +21,7 @@ export const useTable = () => {
     for (let i = 1; i <= cellsCount; i++) {
       const pos = `${charsArr[charArrIndex]}${numIndex}`
       const piece = {
-        ...piecePositions.filter((piece) => piece.pos === pos)[0],
-        size: cellSize * 0.7,
+        ...piecePositions.filter((piece) => piece.pos === pos)[0]
       }
 
       const bgColor =
@@ -63,7 +55,6 @@ export const useTable = () => {
           top: charArrIndex === charsArr.length - 1 ? numIndex : "",
           bottom: numIndex === 1 ? charsArr[charArrIndex] : "",
         },
-        size: cellSize,
         attackedBy: []
       })
 
@@ -82,7 +73,6 @@ export const useTable = () => {
   }
 
   return {
-    cellSize,
     initCells,
   }
 }
