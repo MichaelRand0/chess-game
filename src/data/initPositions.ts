@@ -46,7 +46,7 @@ export const initPositions = [
   {
     name: PieceNames.pawn,
     side: Side.white,
-    pos: "h2",
+    pos: "h3",
     movesCount: 0,
   },
 
@@ -89,7 +89,7 @@ export const initPositions = [
   {
     name: PieceNames.pawn,
     side: Side.black,
-    pos: "g3",
+    pos: "h4",
     movesCount: 0,
   },
   {
@@ -120,7 +120,7 @@ export const initPositions = [
   {
     name: PieceNames.knight,
     side: Side.black,
-    pos: "g8",
+    pos: "g6",
     movesCount: 0,
   },
 
@@ -133,7 +133,7 @@ export const initPositions = [
   {
     name: PieceNames.bishop,
     side: Side.white,
-    pos: "f3",
+    pos: "c1",
     movesCount: 0,
   },
   {
@@ -145,7 +145,7 @@ export const initPositions = [
   {
     name: PieceNames.bishop,
     side: Side.black,
-    pos: "f8",
+    pos: "f5",
     movesCount: 0,
   },
 

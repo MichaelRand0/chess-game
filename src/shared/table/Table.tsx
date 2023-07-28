@@ -18,6 +18,10 @@ const Table = (props: Props) => {
     initCells()
   }, [cellSize])
 
+  useEffect(() => {
+    console.log('cells', cells)
+  }, [cells])
+
   return (
     <div className="flex flex-wrap" style={{ maxWidth: cellSize * 8 }}>
       {cells.map((cell) => {

@@ -282,7 +282,98 @@ export const useMove = () => {
     const { num: numB, char: charB } = getSplittedId(cellB.id)
 
     if (numA === numB) {
+      const res = cells
+        .map((cell) => {
+          const { num: cellNum, char: cellChar } = getSplittedId(cell?.id)
+          if (cellNum === numA) {
+            if (
+              (charsArr.indexOf(cellChar) < charsArr.indexOf(charA) &&
+                charsArr.indexOf(cellChar) > charsArr.indexOf(charB)) ||
+              (charsArr.indexOf(cellChar) > charsArr.indexOf(charA) &&
+                charsArr.indexOf(cellChar) < charsArr.indexOf(charB))
+            ) {
+              if (cell?.piece) {
+                return false
+              }
+              return cell
+            }
+          }
+          return null
+        })
+        .filter((item) => item !== null)
+      if (res.includes(false)) {
+        return null
+      } else {
+        return res
+      }
     }
+  }
+
+  const checkCastling = (kingCell: ICell) => {
+    const rocks = cells.filter(
+      (item) =>
+        item?.piece?.side === kingCell?.piece?.side &&
+        item?.piece?.name === PieceNames.rock
+    )
+    // console.log('rocks', rocks)
+    let markedRocks: ICell[] = []
+    rocks.forEach((item) => {
+      const checkedCells = checkCollisions(kingCell, item)
+      let moves: ICell[] = checkedCells ? [...checkedCells, kingCell] : []
+      let filteredMoves = filterCheckMoves(kingCell, moves)
+      if (moves?.length > 0 && filteredMoves.length === moves.length) {
+        if (
+          item?.piece?.movesCount === 0 &&
+          kingCell?.piece?.movesCount === 0
+        ) {
+          const attackedCells = getAttackedCells(
+            cells,
+            kingCell.piece.side
+          ).filter((cell) => moves.filter((move) => cell.id === move.id)[0])
+          if (attackedCells?.length === 0) {
+            markedRocks.push(item)
+          }
+        }
+      }
+    })
+    return markedRocks
+  }
+
+  const castling = (kingCell: ICell, rockCell: ICell) => {
+    const { num: rockNum, char: rockChar } = getSplittedId(rockCell.id)
+    const newKingId = rockChar === "h" ? `g${rockNum}` : `c${rockNum}`
+    const newRockId = rockChar === "h" ? `f${rockNum}` : `d${rockNum}`
+    const newCells = cells.map((item) => {
+      if (item.id === kingCell.id || item.id === rockCell.id) {
+        return {
+          ...item,
+          piece: null,
+        }
+      } else if (item.id === newKingId) {
+        return {
+          ...item,
+          piece: {
+            ...kingCell?.piece,
+            pos: newKingId,
+            movesCount: 1,
+          },
+        }
+      } else if (item.id === newRockId) {
+        return {
+          ...item,
+          piece: {
+            ...rockCell?.piece,
+            pos: newRockId,
+            movesCount: 1,
+          },
+        }
+      }
+      return item
+    })
+    setCells(newCells)
+    setMarkedCells([])
+    setSelectedCell(null)
+    togglePlayingSide()
   }
 
   const getDiagonalMoves = (
@@ -334,7 +425,17 @@ export const useMove = () => {
   }
 
   const onClick = (cell: ICell, moves?: ICell[]) => {
-    const result = filterCheckMoves(cell, moves ?? [])
+    let result = filterCheckMoves(cell, moves ?? [])
+    if (selectedCell?.piece?.name === PieceNames.king) {
+      const rocks = checkCastling(selectedCell)
+      if (rocks.filter((rockCell) => rockCell.id === cell.id).length > 0) {
+        castling(selectedCell, cell)
+        return false
+      }
+    }
+    if (cell?.piece?.name === PieceNames.king) {
+      result = result.concat(checkCastling(cell))
+    }
     if (player.side === playingSide) {
       const piece = cell?.piece
       if (selectedCell?.id === cell.id) {
@@ -404,7 +505,6 @@ export const useMove = () => {
   const movePiece = (cellFrom: ICell, cellTo: ICell) => {
     const pieceFrom = cellFrom?.piece
     if (pieceFrom) {
-      const isPawn = pieceFrom?.name === PieceNames.pawn
       const movesCount = pieceFrom?.movesCount
       const newCells = cells.map((item) => {
         if (item.id === cellFrom.id) {
@@ -419,7 +519,7 @@ export const useMove = () => {
             piece: {
               ...pieceFrom,
               pos: cellTo.id,
-              movesCount: isPawn ? movesCount + 1 : movesCount,
+              movesCount: movesCount + 1,
             },
           }
         }
@@ -451,7 +551,6 @@ export const useMove = () => {
         }
       }
     })
-    console.log("newCells", newCells)
     return newCells
   }
 
@@ -477,15 +576,12 @@ export const useMove = () => {
         }
         return item
       })
-      console.log("fakeTable", fakeTable)
       const attackedCells = getAttackedCells(fakeTable, cell?.piece?.side)
-      // console.log('attackedCells',attackedCells)
       const isKingChecked = attackedCells.some(
         (attackedCell) =>
           cell?.piece?.side === attackedCell?.piece?.side &&
           attackedCell?.piece?.name === PieceNames.king
       )
-      // console.log('isKingChecked', isKingChecked)
       if (!isKingChecked) {
         result.push(move)
       }
@@ -504,5 +600,6 @@ export const useMove = () => {
     getQueenMoves,
     getMoves,
     getAttackedCells,
+    checkCastling,
   }
 }
