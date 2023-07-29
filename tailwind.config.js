@@ -14,6 +14,9 @@ module.exports = {
       },
     },
     colors: {
+      dark: '#262420',
+      green: '#779556',
+      cream: '#EBECD0',
       blackTransparent: '#000000be'
     }
   },

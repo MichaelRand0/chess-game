@@ -5,7 +5,6 @@ import { useCell } from "../cell"
 import { usePlayer } from "../player"
 import { useStory } from "../story"
 import getSplittedId from "@/helpers/getSplittedId"
-import { useEffect } from "react"
 import { useModal } from "../modal"
 
 export const useMove = () => {
@@ -22,10 +21,6 @@ export const useMove = () => {
   const {setCurrentModal} = useModal()
   const { setLastMoves } = useStory()
   const { charsArr } = coords
-
-  useEffect(() => {
-    console.log("playingSide", playingSide)
-  }, [playingSide])
 
   const checkMoves = (cell: ICell) => {
     const piece = cell?.piece

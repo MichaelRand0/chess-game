@@ -5,7 +5,6 @@ import { useConfig } from "@/hooks/config"
 import { useTheme } from "@/hooks/theme"
 import { useCell } from "@/hooks/cell"
 import { useModal } from "@/hooks/modal"
-import { useMove } from "@/hooks/move"
 import { useStory } from "@/hooks/story"
 
 type Props = {}
@@ -23,7 +22,6 @@ const PieceSelect = (props: Props) => {
   const { theme } = useTheme()
   const { cells, setCells } = useCell()
   const {lastMoves} = useStory()
-  const {movePiece} = useMove()
   const cell = cells.filter(item => item.id === lastMoves?.to)[0]
 
   const onClick = (newPiece: PieceNames) => {
