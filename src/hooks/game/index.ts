@@ -12,6 +12,7 @@ import { gameSlice } from "@/redux/slices/game.slice"
 import { useEffect, useState } from "react"
 import { useStory } from "../story"
 import { Side } from "@/models/Piece"
+import { GameResult } from "@/models/Game"
 
 export const useGame = () => {
   const dispatch = useDispatch()
@@ -29,13 +30,13 @@ export const useGame = () => {
   const {setLastMoves} = useStory()
 
   const [result, setResult] = useState({
-    message: gameResult?.type === 'Win' ? 'Вы победили!' : gameResult?.type === 'Lose' ? 'Вы проиграли.' : 'Ничья',
-    reason: gameResult?.reason === 'checkmate' ? 'Поставлен мат' : gameResult?.reason === 'surrender' ? 'Игрок сдался' : 'Закончились фигуры'
+    message: '',
+    reason: ''
   })
 
   useEffect(() => {
     setResult({
-      message: gameResult?.type === 'Win' ? 'Вы победили!' : gameResult?.type === 'Lose' ? 'Вы проиграли.' : 'Ничья',
+      message: gameResult?.winner === Side.white ? 'Белые победили!' : gameResult?.winner === 'Draw' ? 'Ничья' : 'Черные победили!',
       reason: gameResult?.reason === 'checkmate' ? 'Поставлен мат' : gameResult?.reason === 'surrender' ? 'Игрок сдался' : 'Закончились фигуры'
     })
   }, [gameResult])
@@ -114,15 +115,13 @@ export const useGame = () => {
     setPlayingSide(Side.white)
     setPlayer({side: Side.white})
     setGameResult(null)
-    console.log('player', player)
-    console.log('playingSide', playingSide)
   }
 
   return {
     initCells,
     restartGame,
     result,
-    setResult,
     stopGame,
+    setGameResult,
   }
 }

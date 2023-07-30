@@ -1,8 +1,10 @@
-type Result = "Win" | "Lose" | "Draw"
+import { Side } from "./Piece"
+
+type Result = Side | 'Draw'
 
 type EndReason = "checkmate" | "no pieces" | "surrender"
 
-type GameResult = {
-  type: Result
+export type GameResult = {
+  winner: Result
   reason: EndReason
 } | null

@@ -8,23 +8,34 @@ import { useMove } from "@/hooks/move"
 import ModalContainer from "@/modules/modal/ModalContainer"
 import { useModal } from "@/hooks/modal"
 import { useConfig } from "@/hooks/config"
+import { usePlayer } from "@/hooks/player"
+import { Side } from "@/models/Piece"
 
 type Props = {}
 
 const Table = (props: Props) => {
-  const { initCells } = useGame()
+  const { initCells, stopGame } = useGame()
   const { lastMoves } = useStory()
   const { cells, selectedCell, markedCells } = useCell()
-  const { pieceHandler } = useMove()
-  const { currentModal } = useModal()
+  const { pieceHandler, getIsCheckmate } = useMove()
+  const { currentModal, setCurrentModal } = useModal()
   const { size } = useConfig()
+  const { playingSide, player } = usePlayer()
   useEffect(() => {
     initCells()
   }, [])
 
-  // useEffect(() => {
-  //   console.log('cells', cells)
-  // }, [cells])
+  useEffect(() => {
+    if (playingSide && cells.length > 0) {
+      if (getIsCheckmate(playingSide)) {
+        stopGame({
+          winner: playingSide === Side.white ? Side.black : Side.white,
+          reason: "checkmate",
+        })
+        setCurrentModal("result")
+      }
+    }
+  }, [cells])
 
   return (
     <div

@@ -10,12 +10,12 @@ interface Props extends React.ComponentProps<"div"> {}
 const Sidebar = (props: Props) => {
   const { className } = props
   const { size } = useConfig()
-  const { playingSide } = usePlayer()
+  const { playingSide, player } = usePlayer()
   const { stopGame } = useGame()
 
   const surrender = () => {
     stopGame({
-      type: "Lose",
+      winner: player.side === Side.white ? Side.black : Side.white,
       reason: "surrender",
     })
   }

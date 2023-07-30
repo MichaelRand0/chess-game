@@ -423,7 +423,7 @@ export const useMove = () => {
 
   const onClick = (cell: ICell, moves?: ICell[]) => {
     let result = filterCheckMoves(cell, moves ?? [])
-    const {num, char} = getSplittedId(cell?.id)
+    const {num} = getSplittedId(cell?.id)
     if (selectedCell?.piece?.name === PieceNames.king) {
       const rocks = checkCastling(selectedCell)
       if (rocks.filter((rockCell) => rockCell.id === cell.id).length > 0) {
@@ -592,6 +592,19 @@ export const useMove = () => {
     return result
   }
 
+  const getIsCheckmate = (sideToCheck: Side) => {
+    const sideCells = cells.filter(cell => cell?.piece?.side === sideToCheck)
+    let isCheckmate = true
+    for(let i = 0; i < sideCells.length; i++) {
+      const moves = getMoves(sideCells[i])
+      const filteredMoves = filterCheckMoves(sideCells[i], moves.moves)
+      if(filteredMoves.length > 0) {
+        isCheckmate = false
+      }
+    }
+    return isCheckmate
+  }
+
   return {
     checkMoves,
     movePiece,
@@ -604,5 +617,6 @@ export const useMove = () => {
     getMoves,
     getAttackedCells,
     checkCastling,
+    getIsCheckmate,
   }
 }

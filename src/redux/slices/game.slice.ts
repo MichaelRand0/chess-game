@@ -1,3 +1,4 @@
+import { GameResult } from "@/models/Game"
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 interface IState {
