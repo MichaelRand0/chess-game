@@ -5,6 +5,7 @@ import { configSlice } from './slices/config.slice'
 import { playerSlice } from './slices/player.slice'
 import { storySlice } from './slices/story.slice'
 import { modalSlice } from './slices/modal.slice'
+import { gameSlice } from './slices/game.slice'
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
     config: configSlice.reducer,
     player: playerSlice.reducer,
     story: storySlice.reducer,
-    modal: modalSlice.reducer
+    modal: modalSlice.reducer,
+    game: gameSlice.reducer
   },
 })
 

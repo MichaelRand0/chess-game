@@ -4,13 +4,13 @@ export const initPositions = [
   {
     name: PieceNames.pawn,
     side: Side.white,
-    pos: "g5",
+    pos: "a2",
     movesCount: 0,
   },
   {
     name: PieceNames.pawn,
     side: Side.white,
-    pos: "b7",
+    pos: "b2",
     movesCount: 0,
   },
   {
@@ -46,7 +46,7 @@ export const initPositions = [
   {
     name: PieceNames.pawn,
     side: Side.white,
-    pos: "h3",
+    pos: "h2",
     movesCount: 0,
   },
 
@@ -89,7 +89,7 @@ export const initPositions = [
   {
     name: PieceNames.pawn,
     side: Side.black,
-    pos: "h4",
+    pos: "b7",
     movesCount: 0,
   },
   {
@@ -102,32 +102,32 @@ export const initPositions = [
   {
     name: PieceNames.knight,
     side: Side.white,
-    pos: "b3",
+    pos: "b1",
     movesCount: 0,
   },
   {
     name: PieceNames.knight,
     side: Side.white,
-    pos: "g4",
+    pos: "g1",
     movesCount: 0,
   },
   {
     name: PieceNames.knight,
     side: Side.black,
-    pos: "b6",
+    pos: "b8",
     movesCount: 0,
   },
   {
     name: PieceNames.knight,
     side: Side.black,
-    pos: "g6",
+    pos: "g8",
     movesCount: 0,
   },
 
   {
     name: PieceNames.bishop,
     side: Side.white,
-    pos: "c3",
+    pos: "f1",
     movesCount: 0,
   },
   {
@@ -145,7 +145,7 @@ export const initPositions = [
   {
     name: PieceNames.bishop,
     side: Side.black,
-    pos: "f5",
+    pos: "f8",
     movesCount: 0,
   },
 
@@ -177,13 +177,13 @@ export const initPositions = [
   {
     name: PieceNames.queen,
     side: Side.white,
-    pos: "e5",
+    pos: "d1",
     movesCount: 0,
   },
   {
     name: PieceNames.queen,
     side: Side.black,
-    pos: "f6",
+    pos: "d8",
     movesCount: 0,
   },
 

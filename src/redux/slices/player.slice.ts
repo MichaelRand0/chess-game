@@ -1,11 +1,10 @@
 import { Side } from "@/models/Piece"
-import { createSlice } from "@reduxjs/toolkit"
+import { Player, PlayingSide } from "@/models/Player"
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 interface IState {
-  player: {
-    side: Side
-  }
-  playingSide: Side
+  player: Player
+  playingSide: PlayingSide
 }
 
 const initialState: IState = {
@@ -19,11 +18,11 @@ export const playerSlice = createSlice({
   name: "player",
   initialState,
   reducers: {
-    togglePlayingSide(state) {
-      state.playingSide =
-        state.playingSide === Side.white ? Side.black : Side.white
-        state.player.side =
-        state.player.side === Side.white ? Side.black : Side.white
+    setPlayingSide(state, action: PayloadAction<PlayingSide>) {
+      state.playingSide = action.payload
+    },
+    setPlayer(state, action: PayloadAction<Player>) {
+      state.player = action.payload
     },
   },
 })

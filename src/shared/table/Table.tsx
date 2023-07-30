@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import Cell from "./Cell"
-import { useTable } from "@/hooks/table"
+import { useGame } from "@/hooks/game"
 import { useCell } from "@/hooks/cell"
 import { HighLightTypes } from "@/models/Cell"
 import { useStory } from "@/hooks/story"
@@ -12,7 +12,7 @@ import { useConfig } from "@/hooks/config"
 type Props = {}
 
 const Table = (props: Props) => {
-  const { initCells } = useTable()
+  const { initCells } = useGame()
   const { lastMoves } = useStory()
   const { cells, selectedCell, markedCells } = useCell()
   const { pieceHandler } = useMove()

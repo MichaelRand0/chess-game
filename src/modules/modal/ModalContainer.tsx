@@ -1,4 +1,5 @@
 import { ModalName } from '@/models/Modal'
+import Checkmate from '@/shared/modal/Checkmate'
 import Modal from '@/shared/modal/Modal'
 import PieceSelect from '@/shared/modal/PieceSelect'
 import React from 'react'
@@ -11,7 +12,8 @@ const ModalContainer = (props: Props) => {
   const {currentModal} = props
   return (
     <Modal>
-      <PieceSelect />
+      {currentModal === 'newPiece' ? <PieceSelect /> : ''}
+      {currentModal === 'result' ? <Checkmate /> : ''}
     </Modal>
   )
 }
