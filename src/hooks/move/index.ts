@@ -22,28 +22,6 @@ export const useMove = () => {
   const { setLastMoves } = useStory()
   const { charsArr } = coords
 
-  const checkMoves = (cell: ICell) => {
-    const piece = cell?.piece
-    switch (piece?.name) {
-      case PieceNames.pawn:
-        return getPawnMoves(cell)
-      case PieceNames.rock:
-        const verticalMoves = getVerticalMoves(cell)
-        const horizontalMoves = getHorizontalMoves(cell)
-        return verticalMoves.concat(horizontalMoves)
-      case PieceNames.bishop:
-        return getDiagonalMoves(cell)
-      case PieceNames.queen:
-        const vertical = getVerticalMoves(cell)
-        const horizontal = getHorizontalMoves(cell)
-        const diagonals = getDiagonalMoves(cell)
-        return vertical.concat(horizontal, diagonals)
-
-      default:
-        return []
-    }
-  }
-
   const getPawnMoves = (cell: ICell, table = cells) => {
     const { id, piece } = cell
     const { char, num } = getSplittedId(id)
@@ -435,11 +413,6 @@ export const useMove = () => {
       result = result.concat(checkCastling(cell))
     }
     if (player.side === playingSide) {
-      if(selectedCell?.piece?.name === PieceNames.pawn) {
-        if(selectedCell?.piece?.side === Side.white && num === 8 || selectedCell?.piece?.side === Side.black && num === 1) {
-          setCurrentModal('newPiece')
-        }
-      }
       const piece = cell?.piece
       if (selectedCell?.id === cell.id) {
         setSelectedCell(null)
@@ -453,7 +426,15 @@ export const useMove = () => {
             markedCells.some((item) => item.id === cell?.id) &&
             selectedCell
           ) {
+            if(selectedCell?.piece?.name === PieceNames.pawn) {
+              if(selectedCell?.piece?.side === Side.white && num === 8 || selectedCell?.piece?.side === Side.black && num === 1) {
+                setCurrentModal('newPiece')
+                movePiece(selectedCell, cell)
+                return false
+              }
+            }
             movePiece(selectedCell, cell)
+            togglePlayingSide()
           }
         }
       }
@@ -480,6 +461,7 @@ export const useMove = () => {
         return getRockMoves(cell, table)
 
       default:
+          console.log('mate', cell)
         return getPawnMoves(cell, table)
     }
   }
@@ -528,10 +510,10 @@ export const useMove = () => {
         }
         return item
       })
+      // console.log('newCells', newCells)
       setCells(newCells)
       setMarkedCells([])
       setSelectedCell(null)
-      togglePlayingSide()
       setLastMoves({
         from: cellFrom.id,
         to: cellTo.id,
@@ -568,7 +550,7 @@ export const useMove = () => {
             piece: null,
           }
         }
-        if (item.id === move.id) {
+        if (item?.id === move?.id) {
           return {
             ...move,
             piece: {
@@ -606,7 +588,6 @@ export const useMove = () => {
   }
 
   return {
-    checkMoves,
     movePiece,
     getVerticalMoves,
     getHorizontalMoves,
@@ -618,5 +599,6 @@ export const useMove = () => {
     getAttackedCells,
     checkCastling,
     getIsCheckmate,
+    filterCheckMoves,
   }
 }

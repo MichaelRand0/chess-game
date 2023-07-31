@@ -14,9 +14,9 @@ export const usePlayer = () => {
   const togglePlayingSide = () => {
     const side = playingSide === Side.white ? Side.black : Side.white
     setPlayingSide(side)
-    setPlayer({
-      side,
-    })
+    // setPlayer({
+    //   side,
+    // })
   }
 
   return {

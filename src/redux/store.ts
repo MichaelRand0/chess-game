@@ -6,6 +6,7 @@ import { playerSlice } from './slices/player.slice'
 import { storySlice } from './slices/story.slice'
 import { modalSlice } from './slices/modal.slice'
 import { gameSlice } from './slices/game.slice'
+import { botSlice } from './slices/bot.slice'
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
     player: playerSlice.reducer,
     story: storySlice.reducer,
     modal: modalSlice.reducer,
-    game: gameSlice.reducer
+    game: gameSlice.reducer,
+    bot: botSlice.reducer
   },
 })
 

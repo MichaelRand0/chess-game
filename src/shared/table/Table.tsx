@@ -10,6 +10,7 @@ import { useModal } from "@/hooks/modal"
 import { useConfig } from "@/hooks/config"
 import { usePlayer } from "@/hooks/player"
 import { Side } from "@/models/Piece"
+import { useBot } from "@/hooks/bot"
 
 type Props = {}
 
@@ -21,21 +22,25 @@ const Table = (props: Props) => {
   const { currentModal, setCurrentModal } = useModal()
   const { size } = useConfig()
   const { playingSide, player } = usePlayer()
+  const { randomMove } = useBot()
+
   useEffect(() => {
     initCells()
   }, [])
 
   useEffect(() => {
-    if (playingSide && cells.length > 0) {
+    if (playingSide && playingSide !== player.side) {
       if (getIsCheckmate(playingSide)) {
         stopGame({
           winner: playingSide === Side.white ? Side.black : Side.white,
           reason: "checkmate",
         })
         setCurrentModal("result")
+      } else {
+        randomMove()
       }
     }
-  }, [cells])
+  }, [playingSide])
 
   return (
     <div

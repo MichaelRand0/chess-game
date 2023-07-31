@@ -6,6 +6,7 @@ import { useTheme } from "@/hooks/theme"
 import { useCell } from "@/hooks/cell"
 import { useModal } from "@/hooks/modal"
 import { useStory } from "@/hooks/story"
+import { usePlayer } from "@/hooks/player"
 
 type Props = {}
 
@@ -22,6 +23,7 @@ const PieceSelect = (props: Props) => {
   const { theme } = useTheme()
   const { cells, setCells } = useCell()
   const {lastMoves} = useStory()
+  const {togglePlayingSide} = usePlayer()
   const cell = cells.filter(item => item.id === lastMoves?.to)[0]
 
   const onClick = (newPiece: PieceNames) => {
@@ -39,6 +41,7 @@ const PieceSelect = (props: Props) => {
     })
     setCells(newCells)
     setCurrentModal(null)
+    togglePlayingSide()
   }
   return (
     <div
