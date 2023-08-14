@@ -15,7 +15,7 @@ const Menu = (props: Props) => {
   return (
     <div className='bg-green rounded-sm px-7 py-5 flex items-center justify-center flex-col' style={{width: '100%', maxWidth: size.cell * 8, height: size.cell * 8}}>
       <ButtonMain onClick={() => router.push('/game')} variant='light'>Играть</ButtonMain>
-      <div className='w-[200px] mt-6'>
+      {/* <div className='w-[200px] mt-6'>
       <Select value={bot} success color='amber' label="Выбрать бота">
         {Object.entries(bots).map(item => {
           return (
@@ -26,7 +26,7 @@ const Menu = (props: Props) => {
           )
         })}
       </Select>
-      </div>
+      </div> */}
     </div>
   )
 }
