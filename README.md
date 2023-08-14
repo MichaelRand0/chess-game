@@ -1,38 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1>Проект: Chess Game</h1>
 
-## Getting Started
+<h2>Превью проекта:</h2>
 
-First, run the development server:
+https://github.com/MichaelRand0/chess-game/assets/61416895/87d29588-7a0f-495f-b831-ec8371d62d80
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<h2>Цели проекта:</h2>
+<ul>
+  <li>Практика TypeScript, React(Next.js), Redux</li>
+  <li>Пополнение портфолио</li>
+</ul>
+<h2>Основные используемые технологии:</h2>
+<ul>
+  <h3>Frontend:</h3>
+  <li>Next.js</li>
+  <li>TypeScript</li>
+  <li>Redux Toolkit</li>
+  <li>Tailwindcss + Material Tailwind</li>
+</ul>
+<h2>Что реализовано в проекте:</h2>
+<ul>
+  <h3>Frontend:</h3>
+  <li>Полностью написанная с нуля логика настольной игры в шахматы, в том  числе:</li>
+    <ul>
+      <li>Логика хождения фигур(как ходит пешка, слон, ферзь и тд)</li>
+      <li>Рокировка короля с ладьями(учитывая возможный шах и атакованные клетки)</li>
+      <li>Логика шахов(а так же, может ли игрок походить определенной фигурой без шаха своему королю на следующем ходу)</li>
+      <li>Коллизии фигур(фигуры не могут ходить друг через друга, кроме коня)</li>
+      <li>Превращение пешки по достижении противоположной стороны</li>
+    </ul>
+  <li>Простой игровой ИИ написанный на TypeScript</li>
+  <li>Работа со store через Redux-Toolkit</li>
+  <li>Работа с версткой через tailwindcss и material-tailwind</li>
+  <li>Типизация проекта через TypeScript</li>
+</ul>
+<h2>Планы на проект:</h2>
+<ul>
+  <li>Добавить несколько шахматных ботов разной сложности, возможно подключить chatGPT</li>
+  <li>Реализовать логику съедения пешки "на проходе"</li>
+  <li>Добавить возможность играть за черных</li>
+  <li>Добавить разные стилевые темы</li>
+  <li>Добавить систему достижений. За выполнение достижений можно награждать пользователя разными стилевыми темами</li>
+</ul>
+<h2>Инструкция по запуску проекта:</h2>
+<ul>
+  <li>1. Склонировать проект в любую папку с помощью любого IDE редактора(например VS Code)</li>
+  <li>2. Перейти в папку проекта и через терминал установить модули командой yarn или npm i</li>
+  <li>3. Локально запустить проект: yarn dev или npm run dev</li>
+  <li>4. В браузере перейти на localhost:3000</li>
+  <li>5. Играть!</li>
+</ul>
