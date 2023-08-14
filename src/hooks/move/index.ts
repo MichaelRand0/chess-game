@@ -18,7 +18,7 @@ export const useMove = () => {
     markedCells,
   } = useCell()
   const { togglePlayingSide, player, playingSide } = usePlayer()
-  const {setCurrentModal} = useModal()
+  const { setCurrentModal } = useModal()
   const { setLastMoves } = useStory()
   const { charsArr } = coords
 
@@ -401,7 +401,7 @@ export const useMove = () => {
 
   const onClick = (cell: ICell, moves?: ICell[]) => {
     let result = filterCheckMoves(cell, moves ?? [])
-    const {num} = getSplittedId(cell?.id)
+    const { num } = getSplittedId(cell?.id)
     if (selectedCell?.piece?.name === PieceNames.king) {
       const rocks = checkCastling(selectedCell)
       if (rocks.filter((rockCell) => rockCell.id === cell.id).length > 0) {
@@ -426,9 +426,12 @@ export const useMove = () => {
             markedCells.some((item) => item.id === cell?.id) &&
             selectedCell
           ) {
-            if(selectedCell?.piece?.name === PieceNames.pawn) {
-              if(selectedCell?.piece?.side === Side.white && num === 8 || selectedCell?.piece?.side === Side.black && num === 1) {
-                setCurrentModal('newPiece')
+            if (selectedCell?.piece?.name === PieceNames.pawn) {
+              if (
+                (selectedCell?.piece?.side === Side.white && num === 8) ||
+                (selectedCell?.piece?.side === Side.black && num === 1)
+              ) {
+                setCurrentModal("newPiece")
                 movePiece(selectedCell, cell)
                 return false
               }
@@ -461,7 +464,7 @@ export const useMove = () => {
         return getRockMoves(cell, table)
 
       default:
-          console.log('mate', cell)
+        console.log("mate", cell)
         return getPawnMoves(cell, table)
     }
   }
@@ -470,17 +473,35 @@ export const useMove = () => {
     const pieceName = cell?.piece?.name
     switch (pieceName) {
       case PieceNames.pawn:
-        return onClick(cell, getPawnMoves(cell).moves.filter(item => item))
+        return onClick(
+          cell,
+          getPawnMoves(cell).moves.filter((item) => item)
+        )
       case PieceNames.queen:
-        return onClick(cell, getQueenMoves(cell).moves.filter(item => item))
+        return onClick(
+          cell,
+          getQueenMoves(cell).moves.filter((item) => item)
+        )
       case PieceNames.king:
-        return onClick(cell, getKingMoves(cell).moves.filter(item => item))
+        return onClick(
+          cell,
+          getKingMoves(cell).moves.filter((item) => item)
+        )
       case PieceNames.bishop:
-        return onClick(cell, getBishopMoves(cell).moves.filter(item => item))
+        return onClick(
+          cell,
+          getBishopMoves(cell).moves.filter((item) => item)
+        )
       case PieceNames.knight:
-        return onClick(cell, getKnightMoves(cell).moves.filter(item => item))
+        return onClick(
+          cell,
+          getKnightMoves(cell).moves.filter((item) => item)
+        )
       case PieceNames.rock:
-        return onClick(cell, getRockMoves(cell).moves.filter(item => item))
+        return onClick(
+          cell,
+          getRockMoves(cell).moves.filter((item) => item)
+        )
 
       default:
         return onClick(cell)
@@ -518,6 +539,8 @@ export const useMove = () => {
         from: cellFrom.id,
         to: cellTo.id,
       })
+      const audio = new Audio("audio/chess-move.ogg")
+      audio.play()
     }
   }
 
@@ -575,12 +598,12 @@ export const useMove = () => {
   }
 
   const getIsCheckmate = (sideToCheck: Side) => {
-    const sideCells = cells.filter(cell => cell?.piece?.side === sideToCheck)
+    const sideCells = cells.filter((cell) => cell?.piece?.side === sideToCheck)
     let isCheckmate = true
-    for(let i = 0; i < sideCells.length; i++) {
+    for (let i = 0; i < sideCells.length; i++) {
       const moves = getMoves(sideCells[i])
       const filteredMoves = filterCheckMoves(sideCells[i], moves.moves)
-      if(filteredMoves.length > 0) {
+      if (filteredMoves.length > 0) {
         isCheckmate = false
       }
     }

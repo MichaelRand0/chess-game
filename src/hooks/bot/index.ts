@@ -31,8 +31,10 @@ export const useBot = () => {
     const moves = filterCheckMoves(randomPiece, getMoves(randomPiece).moves)
     const randomMove = moves[getRandom(moves.length)]
     if (randomPiece && randomMove) {
-      movePiece(randomPiece, randomMove)
-      togglePlayingSide()
+      setTimeout(() => {
+        movePiece(randomPiece, randomMove)
+        togglePlayingSide()
+      }, 2000)
     }
   }
 

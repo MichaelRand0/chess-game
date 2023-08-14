@@ -69,6 +69,7 @@ const Table = (props: Props) => {
             highlightType={highlightType}
             {...cell}
             size={size}
+            key={cell.id}
             onClick={() => pieceHandler(cell)}
           />
         )
